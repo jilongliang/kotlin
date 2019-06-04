@@ -43,9 +43,9 @@
 ## 五、Kotlin插件
 
 * kotlin-stdlib-jdk8	这个是kotlin的标准jar，也就是最基础的一个工程，底层封装了大量kotlin的语法和实现调用逻辑，也是最复杂的一个工程‘引入工程会出现这三个jar工程
-        kotlin-stdlib-jdk8-1.2.20.jar
-	kotlin-stdlib-1.2.20.jar
-	kotlin-stdlib-jdk7-1.2.20.jar
+* kotlin-stdlib-jdk8-1.2.20.jar
+* kotlin-stdlib-1.2.20.jar
+* kotlin-stdlib-jdk7-1.2.20.jar
 
 * kotlin-reflect     reflect 顾名思义就是反射工程了
 

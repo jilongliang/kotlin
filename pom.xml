@@ -158,6 +158,11 @@
 			<version>1.8.1</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>io.minio</groupId>
+			<artifactId>minio</artifactId>
+			<version>3.0.7</version>
+		</dependency>
 	</dependencies>
 	
 	

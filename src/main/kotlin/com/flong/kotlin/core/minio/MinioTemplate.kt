@@ -1,23 +1,58 @@
 package com.flong.kotlin.core.minio
 
-import com.flong.kotlin.core.minio.vo.MinioItem
 import io.minio.MinioClient
-import io.minio.Result
+import io.minio.ObjectStat
 import io.minio.messages.Bucket
 import io.minio.messages.Item
-import java.io.Serializable
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
+import org.springframework.context.annotation.Bean
+import java.io.InputStream
+import java.util.ArrayList
 import java.util.Optional
-import java.io.InputStream;
-import java.util.ArrayList;
 
-
-data class MinioTemplate constructor(
-	var endpoint: String? = "",
-	var accessKey: String? = "",
-	var secretKey: String? = ""
-) : Serializable {
-
-
+import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Primary
+import org.springframework.boot.context.properties.ConfigurationProperties
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.stereotype.Component
+import org.springframework.boot.context.properties.EnableConfigurationProperties
+import org.springframework.beans.factory.annotation.Autowired
+/**
+ * MinioTemplate連接工具
+ * Linux的时区与minio容器的时区不一致导致的异常
+ * ErrorResponse(code=RequestTimeTooSkewed, message=The difference between the request time and the server's time is too large.,
+ * bucketName=null, objectName=null, resource=/kotlin, requestId=null, hostId=null)
+ */
+@Component
+@Configuration
+@EnableConfigurationProperties(MinioProperties::class)
+open class MinioTemplate  {
+ 
+	var url:String 		 = ""
+	var accessKey:String = ""
+	var secretKey:String = ""
+	
+	//constructor无参数构造方法是为了解决以下错误:
+	//Unsatisfied dependency expressed through constructor parameter 0; nested exception is
+	//org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'java.lang.String'
+	//available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+	constructor()
+	
+	//有参数的构造方法
+	constructor(url:String , accessKey:String, secretKey:String){
+		this.url = url
+		this.accessKey = accessKey
+		this.secretKey = secretKey
+	}
+	
+	
+	@Autowired lateinit var minioProperties: MinioProperties
+	
+	open fun getMinioClient(): MinioClient {
+		return MinioClient(minioProperties.url,minioProperties.accessKey,minioProperties.secretKey)
+	}
+	
 	/**
 	 * 创建bucket
 	 * @param bucketName bucket名称
@@ -85,7 +120,7 @@ data class MinioTemplate constructor(
 	 * @return url
 	 * @throws Exception https://docs.minio.io/cn/java-client-api-reference.html#getObject
 	 */
-	fun  getObjectURL(bucketName:String , objectName:String , expires:Int ) :String {
+	fun getObjectURL(bucketName:String , objectName:String , expires:Int ) :String {
 		return getMinioClient().presignedGetObject(bucketName, objectName, expires)
 	}
 	
@@ -99,8 +134,8 @@ data class MinioTemplate constructor(
 	 * @return 二进制流
 	 * @throws Exception https://docs.minio.io/cn/java-client-api-reference.html#getObject
 	 */
-	fun  getObject(bucketName:String , objectName:String ) :InputStream{
-		return getMinioClient().getObject(bucketName, objectName);
+	fun getObject(bucketName:String , objectName:String ) :InputStream{
+		return getMinioClient().getObject(bucketName, objectName)
 	}
 	
 	
@@ -112,17 +147,55 @@ data class MinioTemplate constructor(
 	 * @param stream     文件流
 	 * @throws Exception https://docs.minio.io/cn/java-client-api-reference.html#putObject
 	 */
-	fun   putObject(bucketName:String , objectName:String ,  stream:InputStream)   {
+	fun putObject(bucketName:String , objectName:String , stream:InputStream)  {
 		//假设不存在 bucket名称，程序创建 bucket名称,不需要手动创建
-		createBucket(bucketName);
-		getMinioClient().putObject(bucketName, objectName, stream, stream.available(), "application/octet-stream");
+		createBucket(bucketName)
+		getMinioClient().putObject(bucketName, objectName, stream, stream.available().toLong(), "application/octet-stream");
 	}
 
 
-	//获取MinioClient
-	fun getMinioClient(): MinioClient {
-		return MinioClient(endpoint, accessKey, secretKey)
+	/**
+	 * 上传文件
+	 *
+	 * @param bucketName  bucket名称
+	 * @param objectName  文件名称
+	 * @param stream      文件流
+	 * @param size        大小
+	 * @param contextType 类型
+	 * @throws Exception https://docs.minio.io/cn/java-client-api-reference.html#putObject
+	 */
+	fun putObject(bucketName:String, objectName:String, stream:InputStream, size:Long,contextType:String ):Unit {
+		//假设不存在 bucket名称，程序创建 bucket名称,不需要手动创建
+		createBucket(bucketName)
+		getMinioClient().putObject(bucketName, objectName, stream, size, contextType)
 	}
+
+	
+	/**
+	 * 获取文件信息
+	 *
+	 * @param bucketName bucket名称
+	 * @param objectName 文件名称
+	 * @throws Exception https://docs.minio.io/cn/java-client-api-reference.html#statObject
+	 */
+	fun getObjectInfo(bucketName:String , objectName:String ) : ObjectStat {
+		return getMinioClient().statObject(bucketName, objectName)
+	}
+	
+	
+	/**
+	 * 删除文件
+	 * @param bucketName bucket名称
+	 * @param objectName 文件名称
+	 * @throws Exception https://docs.minio.io/cn/java-client-api-reference.html#removeObject
+	 */
+	fun removeObject(bucketName:String ,objectName : String ) :Unit {
+		getMinioClient().removeObject(bucketName, objectName)
+	}
+
+	
+	
+	 
 
 
 }

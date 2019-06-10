@@ -43,7 +43,6 @@ open class DataSourceConfig  {
 		return DruidDataSource();
 	}
 
-
 	@Bean
 	open fun transactionManager(@Qualifier("dataSource") dataSource: DataSource): DataSourceTransactionManager {
 		return DataSourceTransactionManager(dataSource);

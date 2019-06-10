@@ -1,8 +1,6 @@
 package com.flong.kotlin.core.vo
 
-import lombok.Data
 
-@Data
 class LiveResp<Any> {
 
 	var code: Int = 200;

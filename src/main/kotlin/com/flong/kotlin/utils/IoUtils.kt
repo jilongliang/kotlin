@@ -11,6 +11,7 @@ import java.util.Arrays
 import java.io.InputStreamReader
 import java.io.BufferedReader
 import java.lang.Byte
+import javax.servlet.http.HttpServletResponse
 
 object IoUtils{
 	
@@ -158,7 +159,7 @@ object IoUtils{
 	}
 
 	//通过正常写法来实现
-	fun writeDef(`in`: InputStream, output: OutputStream) {
+	fun writeAndReadDef(`in`: InputStream, output: OutputStream) {
 		try {
 			var read: Int = `in`.read()
 			`in`.use { input ->
@@ -249,4 +250,12 @@ object IoUtils{
 	}
 
 
+	fun downloadFile( response : HttpServletResponse, fileName:String , charset:String ,  inputStream: InputStream) {
+		var out = response.getOutputStream();
+		response.reset();
+		response.setHeader("Content-Disposition", "filename=" + fileName);
+		response.setContentType("application/octet-stream; charset=" + charset);
+		writeClo(inputStream,out)
+
+	}
 } 

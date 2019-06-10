@@ -26,7 +26,6 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver
 //@SpringBootApplication(scanBasePackages = arrayOf("com.flong.kotlin")) 这种写法也OK
 open class Application {
 
-
 	@Bean
 	open fun jspViewResolver(): InternalResourceViewResolver {
 		var resolver = InternalResourceViewResolver();

@@ -1,0 +1,1 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.flong.kotlin.core.redis.RedisAutoConfiguration

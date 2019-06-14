@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.PathVariable
+import com.flong.kotlin.modules.rabbitmq.provider.UserProviderService
 
 
 @RestController
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody
 open class UserController : BaseController(){
 	
     @Autowired private lateinit var userService: UserService
+	@Autowired private lateinit var userProviderService :UserProviderService
  
 	
 	@RequestMapping("/list1")
@@ -75,6 +78,18 @@ open class UserController : BaseController(){
 		println(jsonText.component2())
 		println(jsonText.userName)
     }
+	
+	
+	
+	//rabbitMq简单测试
+	@RequestMapping("/rabbitMq/{userId}")
+    fun rabbitMq(@PathVariable("userId") userId:Long ){
+		var user = userService.getUserId(userId);
+		
+		userProviderService.syncUserQueue(user.toString())
+		
+    }
+	
 	
 	
 }

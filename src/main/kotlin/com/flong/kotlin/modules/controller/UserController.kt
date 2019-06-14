@@ -12,33 +12,44 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.RequestBody
+import io.swagger.annotations.Api
+import io.swagger.annotations.ApiOperation
+import io.swagger.annotations.ApiImplicitParams
+import io.swagger.annotations.ApiImplicitParam
+import io.swagger.annotations.ApiResponse
+import io.swagger.annotations.ApiResponses
 
 
 @RestController
 @RequestMapping("/rest")
+@Api("用户模块")
 open class UserController : BaseController(){
 	
     @Autowired private lateinit var userService: UserService
  
 	
+	@ApiOperation(value="调整页面")
 	@RequestMapping("/list1")
     fun list1():  String{
 		return "NewFile" //跳转页面
     }
 	
     //添加
+	@ApiOperation(value="添加用户")
 	@RequestMapping("/add")
     fun add():  Unit{
 		userService.addUser()
     }
 	
 	//删除
+	@ApiOperation(value="删除用户")
 	@RequestMapping("/deletedById")
     fun deletedById(userId : Long):  Unit{
 		userService.deleteById(userId);
     }
 	
 	//更新
+	@ApiOperation(value="更新用户")
 	@RequestMapping("/update")
     fun update(user : User):  Unit{
 		userService.updateById(user)
@@ -46,6 +57,7 @@ open class UserController : BaseController(){
 	
 	
 	//根据Id查询用户
+	@ApiOperation(value="根据Id查询用户")
 	@RequestMapping("/getUserId")
     fun getUserId(userId :Long):Any?{
 		var user = userService.getUserId(userId);
@@ -57,12 +69,15 @@ open class UserController : BaseController(){
     }
 	
 	//查询所有
+	@ApiOperation(value="查询所有用户信息")
 	@RequestMapping("/queryAllUser")
     fun queryAllUser():List<User>?{
 		return userService.queryAllUser()
     }
 	
-    //分页查询
+	
+	//分页查询
+	@ApiOperation(value="用户列表分页",notes="用户列表分页")
 	@RequestMapping("listPage")
     fun listPage(query :UserQuery) :PageVO<UserRespVo> ? {
     	var listPage = userService.listPage(query);

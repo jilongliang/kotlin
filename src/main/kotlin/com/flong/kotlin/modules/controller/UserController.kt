@@ -1,5 +1,6 @@
 package com.flong.kotlin.modules.controller
 
+import com.alibaba.fastjson.JSON
 import com.flong.kotlin.core.PageVO
 import com.flong.kotlin.core.exception.BaseException
 import com.flong.kotlin.core.web.BaseController
@@ -8,32 +9,28 @@ import com.flong.kotlin.modules.enums.UserMsgCode
 import com.flong.kotlin.modules.query.UserQuery
 import com.flong.kotlin.modules.service.UserService
 import com.flong.kotlin.modules.vo.resp.UserRespVo
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.redis.core.StringRedisTemplate
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import org.springframework.web.bind.annotation.RequestBody
-import org.slf4j.LoggerFactory
-import org.slf4j.Logger
-import java.util.Date
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.data.redis.core.RedisTemplate
 
 
 @RestController
 @RequestMapping("/rest")
 open class UserController : BaseController() {
 
-	@Autowired
-	private lateinit var userService: UserService
-	@Autowired
-	private lateinit var redisTemplate: RedisTemplate<String,User>
-	
+	@Autowired lateinit var userService: UserService
+	@Autowired lateinit var stringRedisTemplate: StringRedisTemplate
 	
 	companion object {
 		private val log: Logger = LoggerFactory.getLogger(UserController::class.java)
-		private final var USER_REDIS_KEY = "QUERY_USER_LIST_REDIS_KEY";
+		private final var USER_REDIS_KEY 		= "QUERY_USER_REDIS_KEY";
 		private final var USER_REDIS_BACKUP_KEY = "USER_REDIS_BACKUP_KEY";
-		private final var CURRENT_USER = "CURRENT_USER";
+		private final var CURRENT_USER 			= "CURRENT_USER";
 	}
 
 	@RequestMapping("/list1")
@@ -94,22 +91,17 @@ open class UserController : BaseController() {
 	//简单的缓存测试
 	@RequestMapping("/getUserByRedis/{userId}")
 	fun getUserByRedis(@PathVariable("userId") userId: Long) {
-
-		var redis_key = USER_REDIS_KEY + "_" + userId;
-
-		var user = redisTemplate.opsForValue().get(redis_key);//从缓存获取数据
-
+		var redis_key 	= USER_REDIS_KEY + "_" + userId;
+		var user		= stringRedisTemplate.opsForValue().get(redis_key)
 		if (user == null) {
-			var user1  = userService.getUserId(userId)
-			redisTemplate.opsForValue().set(redis_key, user1)
-			print("从DB获取----" + user);
+			var userObj  = userService.getUserId(userId)
+			stringRedisTemplate.opsForValue().set(redis_key, userObj.toString())
+			print("从DB获取----" + JSON.toJSONString(userObj));
 
 		} else {
-			print("从缓存获取----" + user);
+			print("从缓存获取----" + JSON.toJSONString(user));
 		}
 
-
 	}
-
 
 }

@@ -26,6 +26,9 @@ import org.springframework.stereotype.Component
 import redis.clients.jedis.JedisPoolConfig
 import java.time.Duration
 
+/**
+ *参考博客： https://blog.csdn.net/New_CJ/article/details/84892543
+ */
 @Component
 @EnableCaching // 启动缓存
 @Configuration
@@ -136,7 +139,7 @@ open class RedisTemplateDataSource : CachingConfigurerSupport  {
 
     @Bean
 	override
-	fun cacheManager() : CacheManager{
+	fun cacheManager() : CacheManager{ 
         var redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(5));
         return RedisCacheManager.builder(RedisCacheWriter.nonLockingRedisCacheWriter(jedisConnectionFactory(jedisPoolConfig())))
                .cacheDefaults(redisCacheConfiguration).build();

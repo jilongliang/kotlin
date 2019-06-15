@@ -1,15 +1,18 @@
 
 ## 一、为什么学习（初衷）：
 * 1、经过调研很多培训机构大量投入课程的产出,说明在新一代的编程领域有一定的地位，它前程应用一定会有更好的广泛的使用。
- * 2、阿里p3c扫描代码ReView插件底层大量使用了Kotlin开发与使用,
- * 3、据说SpringBoot2.以上的全家桶很多组件底层框架和Spring5.x版本用到kotlin支持开发(拥抱Kotlin)。
+ * 2、阿里p3c扫描代码ReView插件底层大量使用了Kotlin进行实际开发
+ * 3、经过调研SpringBoot2.以上的全家桶很多组件底层框架和Spring5.x版本用到kotlin支持开发(拥抱Kotlin)。
  * 4、在2017年在朋友圈偶遇它的影子。
 *  5、2018年准备学习kotlin相关的热身工作，在学习过程中，把牺牲个人周末休息时间，尝试把公司的Spring Cloud工程改写成Kotlin框架。
 *  6、当然了现在学习和了解它，不一定现在就要用它，主要目的是为以后做准备。
 *  7、作为技术人员，希望为kotlin的生态作出一份渺小的贡献。
+![Spring5.x暗示什么呢？](https://upload-images.jianshu.io/upload_images/14586304-301e181a168f86c0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+![Kotlin&Spring5.x](https://upload-images.jianshu.io/upload_images/14586304-b66d0a7a8e028de6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
-##二、技术选型
+## 二、技术选型
  ![Kotlin框架.png](https://upload-images.jianshu.io/upload_images/14586304-3b5c6736f45dc432.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 * 解析器：JSOUP、FastJSON
@@ -22,19 +25,21 @@
 
 
 
-##三、kotlin背景简要描述
+## 三、kotlin背景简要描述
 * Kotlin 是一种在 Java 虚拟机上运行的静态类型编程语言，被称之为 Android 世界的Swift，由 JetBrains 设计开发并开源。Kotlin 可以编译成Java字节码，也可以编译成 JavaScript，方便在没有 JVM 的设备上运行。
-*  在Google I/O 2017中，Google 宣布 Kotlin 成为 Android 官方开发语言。
+*  **立太子**：在Google I/O 2017中，Google 宣布 Kotlin 成为 Android 官方开发语言
 * Kotlin支持表达式语法编程非常友好,以简洁代码等众多方面强大功能，吸引很多开发者的青睐。
+> [官方网站](https://kotlinlang.org/)
+[kotlin手册](https://kotlinlang.org/docs/tutorials/) 
 
 ## 四、Spring Boot 发展路线简要描述
 * 随着动态语言的流行 (Ruby、Groovy、Scala、Node.js)，Java 的开发显得格外的笨重：繁多的配置、低下的开发效率、复杂的部署流程以及第三方技术集成难度大。
-* 在上述环境下，Spring Boot 应运而生。它使用“习惯优于配置”（项目中存在大量的配置，此外还内置了一个习惯性的配置，让你无需手动进行配置）的理念让你的项目快速的运行起来。使用 Spring Boot 很容易创建一个独立运行（运行 Jar，内嵌 Servlet 容器）准生产级别的基于 Spring 框架的项目，使用 Spring Boot 你可以不用或者只需很少的 Spring 配置。
+* 在上述环境下，Spring Boot 应运而生。它使用“习惯优于配置”（项目中存在大量的配置，此外还内置了一个习惯性的配置，让你无需手动进行配置）的理念让你的项目快速的运行起来。使用 Spring Boot 很容易创建一个独立运行（运行 Jar，内嵌 Servlet 容器）准生产级别的基于 Spring框架的项目，使用 Spring Boot 你可以不用或者只需很少的 Spring 配置。
 
 ### 4.1 SpringBoot插件使用 
 * spring-boot-starter-actuator    actuator是监控系统健康情况的工具
 * spring-boot-devtools			实现热部署,实际开发过程中，修改应用的业务逻辑时常常需要重启应用，这显得非常繁琐，降低了开发效率，所以热部署对于开发来说显得十分必要了
-* spring-boot-starter-aop			此插件没什么好说的了,aop是spring的两大功能模块之一，功能非常强大，为解耦提供了非常优秀的解决方案。如：面向方面编程
+* spring-boot-starter-aop	此插件没什么好说的了,aop是spring的两大功能模块之一，功能非常强大，为解耦提供了非常优秀的解决方案。如：面向方面编程
 * spring-boot-starter-tomcat  	spring boot 内置Tomcat插件
 * spring-boot-starter-test  		测试工具
 * mybatis-spring-boot-starter 	spring boot整合MyBatis的jar
@@ -51,13 +56,20 @@
 
 ## 六、jsoup简要
 * jsoup 是一款Java 的HTML解析器，可直接解析某个URL地址、HTML文本内容。它提供了一套非常省力的API，可通过DOM，CSS以及类似于jQuery的操作方法来取出和操作数据。
-*  ***个人认为jsoup是最好的解析器***，在很多场景都能见到他的影子,不单只可以解析HTML所有结构，还可以解析XML，在做爬虫器最为广泛。
+*  个人认为jsoup是`最好的解析器`，在很多场景都能见到他的影子,不单只可以解析HTML所有结构，还可以解析XML，在做爬虫器最为广泛。
+> [官方网站](https://jsoup.org/)  https://jsoup.org/
+>[深入理解Jsoup解析器API与实际运用](https://www.jianshu.com/p/e036ba0b3acc)
+
 
 ## 七、fastJson
-* 阿里JSON解析器，详细文档请看官方 https://github.com/alibaba/fastjson
+* 阿里JSON解析器
+>详细文档请看官方 https://github.com/alibaba/fastjson
 
 ## 八、HttpClient
 * HttpClient 是Apache Jakarta Common 下的子项目，可以用来提供高效的、最新的、功能丰富的支持 HTTP 协议的客户端编程工具包，并且它支持 HTTP 协议最新的版本。
+>[官方网站](http://hc.apache.org/httpcomponents-client-ga/)
+
+
 
 ## 九、Maven
    * Apache Maven是一个软件项目管理和理解工具。 基于项目对象模型（POM）的概念，Maven可以从中央信息管理项目的构建，报告和文档。
@@ -72,17 +84,19 @@
 ## 十一、工程准备
 
 * 方法一、打开Eclipse Marketplace-->>输入kotlin在线安装即可
-![image.png](https://upload-images.jianshu.io/upload_images/14586304-b981546772d7b10a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![Kotlin在线安装](https://upload-images.jianshu.io/upload_images/14586304-b981546772d7b10a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 * 方法二、下载离线安装包（不提供教程，说明有这种方式）
-![image.png](https://upload-images.jianshu.io/upload_images/14586304-9b16ebeb924e7f2f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![工程选择插件安装](https://upload-images.jianshu.io/upload_images/14586304-9b16ebeb924e7f2f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 * 方法三、可以使用优秀的kotlin编辑器eg: **[IntelliJ IDEA]([https://www.jetbrains.com/idea/](https://www.jetbrains.com/idea/)
 )**
 
 ## 十二、工程结构
 
-![image.png](https://upload-images.jianshu.io/upload_images/14586304-2d5ab080ce3ae9bc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-![image.png](https://upload-images.jianshu.io/upload_images/14586304-bbab634b5aaec5f2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-![image.png](https://upload-images.jianshu.io/upload_images/14586304-af4887719ace2510.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![工程结构1](https://upload-images.jianshu.io/upload_images/14586304-2d5ab080ce3ae9bc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+![工程结构2](https://upload-images.jianshu.io/upload_images/14586304-bbab634b5aaec5f2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+![工程结构3](https://upload-images.jianshu.io/upload_images/14586304-af4887719ace2510.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
 ## 十三、工程代码结构
@@ -115,6 +129,8 @@ open class Application {
 }
 
  ```
+* #### Maven 的pom依赖的jar工程配置
+ > [Maven 的pom依赖的jar工程配置](https://github.com/jilongliang/kotlin/blob/master/pom.xml)
 
 * #### WebCofig工具类统一处理配置
 * **消息转换器,中文乱码，Long的精度长度问题，时间格式等问题**
@@ -199,6 +215,13 @@ open class WebConfig : WebMvcConfigurer{
 }
 ```
 * BaseServcie的**业务逻辑基类**的封装
+* 【注意】：BaseServcie里面必须要加上构造方法 **constructor() : super()**实现ServiceImpl底层的代码，但有些不需要你实现，来解决内部报 **(This type has a constructor, and thus must be initialized here)** 错误
+* 截图 ![ServiceImpl底层的代码，](https://upload-images.jianshu.io/upload_images/14586304-4a98c5f9bf84251a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+* 单冒号的作用：在Kotlin编程里面单个冒号**代表实现接口或继承父类接口的作用**。如下代码：
+```
+//BaseService实现ServiceImpl
+BaseService<M : BaseMapper<T>, T, Q : Query> : ServiceImpl<M, T> {
+```
 ```
 open class BaseService<M : BaseMapper<T>, T, Q : Query> : ServiceImpl<M, T> {
 	//构造方法
@@ -236,9 +259,10 @@ open class BaseService<M : BaseMapper<T>, T, Q : Query> : ServiceImpl<M, T> {
 }
 ```
 * #### SpringBoot与**Druid**配置数据库连接池数据源
-*  [Druid 的GitHub](https://github.com/alibaba/druid)
-* **[Druid常见问与解答](https://github.com/alibaba/druid/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98
+* > [Druid 的GitHub](https://github.com/alibaba/druid)
+* > **[Druid常见问与解答](https://github.com/alibaba/druid/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98
 )**
+
 ```
 @Configuration
 @MapperScan(basePackages = arrayOf(DataSourceConfig.PACKAGE), sqlSessionFactoryRef = "sessionFactory")
@@ -289,8 +313,6 @@ open class DataSourceConfig  {
 	    //请注意：这种return sf.getObject();与return sf.`object`写法完全一样,但是object是kotiln的关键字，所以要用 【单引号】引起来
 		return sf.`object`
 	}
-
-	
 	
 	/**
 	 * @Description 初始化druid
@@ -467,8 +489,9 @@ interface IUserMapper : BaseMapper<User>{
 
 ```
 * #### 业务Service代码**ORM**
-* 对象关系映射（英语：(Object Relational Mapping，简称ORM，或O/RM，或O/R mapping），是一种程序技术，用于实现面向对象编程语言里不同类型系统的数据之间的转换。
+* 对象关系映射（英语：`Object Relational Mapping，简称ORM，或O/RM，或O/R mapping`），是一种程序技术，用于实现面向对象编程语言里不同类型系统的数据之间的转换。
 * 此类是用于与MyBatis的Mapper进行映射进行操作ORM操作，在这里不过多的详解ORM，在代码中看到操作几乎都是MyBatisPlus自身封装的CRUD的操作，除了分页是自定义MyBatis的XML进行处理。这里提供这样的支持，主要是为了处理对业务复杂拓展查询场景。
+> [初窥理解Kotlin的ORM框架Ktorm](https://www.jianshu.com/p/927cf50782b5)
 
 ```
 @Service
@@ -577,13 +600,13 @@ open class UserController : BaseController(){
 }
 ```
 
-* #### profiles数据库配置
+* #### properties数据库配置
 ```
 logging.evel.root=info
 logging.evel.com.flong.kotlin=debug
 
 # =======mybatis_config=====
-    
+ ## 指定是开发文件
 spring.profiles.active=dev
 #=======datasource========
 #spring.datasource.name=na
@@ -652,6 +675,7 @@ package com.flong.kotlin.utils
 }
 ```
 * #### LiveRequestBodyAdvice全局处理**请求Body参数**工具类
+* 【请注意】：InputMessage输出流信息，这里的类和重写方法要加上$\color{red}{open}$或$\color{red}{public}$关键字修饰，因为kotlin默认是$\color{red}{private}$，不加上会报**HttpHeaders defined in ......**和**InputStream defined in ......**
 ```
 
 /**
@@ -687,7 +711,7 @@ class LiveRequestBodyAdvice : RequestBodyAdvice {
 	}
 
 
-	//httpInput输出流信息，这里的重写方法必须要加上open，因为kotlin默认是private，不加上会报HttpHeaders defined in 
+	//【请注意】：InputMessage输出流信息，这里的重写方法必须要加上open，因为kotlin默认是private，不加上会报HttpHeaders defined in 
 	open class InputMessage : HttpInputMessage {
 		private var headers: HttpHeaders
 		private var body: InputStream
@@ -893,28 +917,26 @@ CREATE TABLE `t_user` (
   "timestamp": "1552964058194"
 }
 ```
-![GIF.gif](https://upload-images.jianshu.io/upload_images/14586304-36ca8a09ee4dd84f.gif?imageMogr2/auto-orient/strip)
+![项目工程](https://upload-images.jianshu.io/upload_images/14586304-36ca8a09ee4dd84f.gif?imageMogr2/auto-orient/strip)
 
-* [***源代码下载***]([https://download.csdn.net/download/l_ji_l/11036742](https://download.csdn.net/download/l_ji_l/11036742)
-)
-
-
+ >  [***CSDN源代码下载需要积分***](https://download.csdn.net/download/l_ji_l/11036742)
+ > **[Github下载不需要积分](https://github.com/jilongliang/kotlin)**
 
  
 ##  十四、为什么记录笔记
-*  1、在平时工作下来，一天认真工作下来，脑子肯定非常很疲倦，故经常健忘。也许跟年龄的岁数增大有关系。人精力与体力等各方面都有限的，毕竟人不是机器。
+*  1、在平时工作下来，一天认真工作下来，脑子肯定非常很疲倦，故容易导致脑子健忘。也许跟年龄的岁数增大有关系。人精力与体力等各方面都有限的，毕竟人不是机器。
 *  2、常言道：***好记性不如烂笔头***。切记千万别以自己有点小聪明对自己懒惰。
-* 3、如果经常健忘的时候，不防借助一些软件工具或者云服务进行帮助存储生活中的痕迹。比如：思维导图（XMind, MindManager,FreeMind）云道笔记等等方式。
+* 3、如果经常健忘的时候，不防借助一些软件工具或者云服务进行帮助存储生活中的痕迹。比如：思维导图（`XMind, MindManager,FreeMind`）云道笔记等等方式。
  
 
- ## 十五、其他说明
+## 十五、其他说明
 
 * 1 、以上问题都是根据自己学习实际情况进行总结整理，除了技术问题查很多网上资料通过进行学习之后梳理。
 
-* 2、 在学习过程中也遇到很多困难和疑点，如有问题或误点，望各位老司机多多指出或者提出建议。本人会采纳各种好建议和正确方式不断完善现况，***人在成长过程中的需要优质的养料***。
+* 2、 在学习过程中也遇到很多困难和疑点，如有问题或误点，望各位老司机多多指出或者提出建议。本人会采纳各种好建议和正确方式不断完善现况，**人在成长过程中的需要优质的养料**。
 
 * 3、 导入代码的时候遇到最多的问题，我想应该是Maven较多，此时不懂maven的童鞋们可以通过自身情况，进行网上查资料学习。如通过网上找资料长时间解决不了，或者框架有不明白可以通过博客留言,在能力范围内会尽力帮助大家解决问题所在，希望在过程中一起进步，一起成长。
 
 * 4 、请牢记一句话：内事问度娘, 外事问谷歌
-***仅供参考学习,此文章属于本人原创可以转载或收藏***
- 今后我可能不在[   Iteye   ](https://jilongliang.iteye.com)  或  [    CSDN    ](https://me.csdn.net/jilongliang)的更新博客文章,会选型简书(支Markdown 语法和历史回退).后面有时间会针对这个框架进行细化写简书进行讲解，他们里面的kotlin细微的用法.***您的关注和支持是最我的好的支持***。
+>**此文章属于本人原创可以转载或收藏**
+ 今后我可能不在[   Iteye   ](https://jilongliang.iteye.com)  或  [    CSDN    ](https://me.csdn.net/jilongliang)的更新博客文章,会选型简书.后面有时间会针对这个框架进行细化写简书进行讲解。

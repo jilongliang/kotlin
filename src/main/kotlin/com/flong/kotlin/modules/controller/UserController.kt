@@ -18,6 +18,9 @@ import io.swagger.annotations.ApiImplicitParams
 import io.swagger.annotations.ApiImplicitParam
 import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.DeleteMapping
 
 
 @RestController
@@ -29,28 +32,28 @@ open class UserController : BaseController(){
  
 	
 	@ApiOperation(value="调整页面")
-	@RequestMapping("/list1")
+	@GetMapping("/list1")
     fun list1():  String{
 		return "NewFile" //跳转页面
     }
 	
     //添加
 	@ApiOperation(value="添加用户")
-	@RequestMapping("/add")
+	@PostMapping("/add")
     fun add():  Unit{
 		userService.addUser()
     }
 	
 	//删除
 	@ApiOperation(value="删除用户")
-	@RequestMapping("/deletedById")
+	@DeleteMapping("/deletedById")
     fun deletedById(userId : Long):  Unit{
 		userService.deleteById(userId);
     }
 	
 	//更新
 	@ApiOperation(value="更新用户")
-	@RequestMapping("/update")
+	@PostMapping("/update")
     fun update(user : User):  Unit{
 		userService.updateById(user)
     }
@@ -58,7 +61,7 @@ open class UserController : BaseController(){
 	
 	//根据Id查询用户
 	@ApiOperation(value="根据Id查询用户")
-	@RequestMapping("/getUserId")
+	@GetMapping("/getUserId")
     fun getUserId(userId :Long):Any?{
 		var user = userService.getUserId(userId);
 		if(user ==null){
@@ -70,7 +73,7 @@ open class UserController : BaseController(){
 	
 	//查询所有
 	@ApiOperation(value="查询所有用户信息")
-	@RequestMapping("/queryAllUser")
+	@GetMapping("/queryAllUser")
     fun queryAllUser():List<User>?{
 		return userService.queryAllUser()
     }
@@ -78,14 +81,14 @@ open class UserController : BaseController(){
 	
 	//分页查询
 	@ApiOperation(value="用户列表分页",notes="用户列表分页")
-	@RequestMapping("listPage")
+	@GetMapping("listPage")
     fun listPage(query :UserQuery) :PageVO<UserRespVo> ? {
     	var listPage = userService.listPage(query);
         return listPage;
     }
 	
 	
-	@RequestMapping("/getBody")
+	@PostMapping("/getBody")
     fun getBody(@RequestBody jsonText:UserRespVo){
 		println(jsonText.component2())
 		println(jsonText.userName)

@@ -9,10 +9,10 @@
 
 # 3、Redis安装
 * Redis安装与其他知识点请参考几年前我编写文档 ，这里不做太多的描述，主要讲解在kotlin+SpringBoot然后搭建Redis与遇到的问题
-> [Redis详细使用说明书.pdf](https://github.com/jilongliang/kotlin/tree/dev-redis/src/main/resource)
+> [Redis详细使用说明书.pdf](https://github.com/jilongliang/kotlin/blob/dev-redis/src/main/resource/Redis%20Detailed%20operating%20instruction.pdf)
+
 
 ![image.png](https://upload-images.jianshu.io/upload_images/14586304-c465eef20f776724.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
 
 # 4、Redis应该学习那些？
 * 列举一些常见的内容

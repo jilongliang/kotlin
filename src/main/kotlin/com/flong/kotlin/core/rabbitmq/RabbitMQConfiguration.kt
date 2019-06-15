@@ -17,7 +17,7 @@ import org.springframework.amqp.core.BindingBuilder
 
 /**
  * @Description 启动RabbitMQ的配置处理
- * @ClassName RabbitMQTemplateClient
+ * @ClassName RabbitMQConfiguration
  * @Date 2018年8月10日 下午5:22:54
  * @Author liangjl
  * @Copyright (c) All Rights Reserved, 2018.

@@ -1,12 +1,12 @@
 package com.flong.kotlin.core.rabbitmq
 
-import kotlin.jvm.JvmStatic
 
 /**
  *常量
  */
 open class RabbitConstants {
 
+	//半生静态对象，不const val不可以修改的常量
 	companion object {
 
 		//交换器名称

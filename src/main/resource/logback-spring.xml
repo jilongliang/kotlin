@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <!--定义日志文件的存储地址,读取配置文件里的log.path配置 勿在 LogBack 的配置中使用相对路径,-->
+  <springProperty scope="context" name="LOG_PATH" source="log.path"/>
+  <!--日志格式-->
+  <property name="LOG_PATTERN" value="%date-%level-[%X{requestId}]-[%thread]-%logger{50}-[%F:%L]-%msg%n"/>
+  <!--引入默认的一些设置-->
+  <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+  <!--web信息-->
+  <logger name="org.springframework.web" level="info"/>
+  <jmxConfigurator/>
+
+  <!--写入日志到控制台的appender,用默认的,但是要去掉charset,否则windows下tomcat下乱码-->
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>${LOG_PATTERN}</pattern>
+    </encoder>
+  </appender>
+  <!--写入日志到文件的appender-->
+  <appender name="fileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${LOG_PATH}/server.log</file>
+    <!-- 设置滚动策略 -->
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+      <!--日志文件输出的文件名,每天一个文件-->
+      <fileNamePattern>${LOG_PATH}/server.log.%d{yyyy-MM-dd}.%i</fileNamePattern>
+      <!-- keep 60 days worth of history -->
+      <maxHistory>60</maxHistory>
+      <maxFileSize>100MB</maxFileSize>
+      <totalSizeCap>20GB</totalSizeCap>
+    </rollingPolicy>
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>${LOG_PATTERN}</pattern>
+    </encoder>
+  </appender>
+
+  <!--warn级别以上的文件appender-->
+  <appender name="errorAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${LOG_PATH}/server-error.log</file>
+    <!-- 设置滚动策略 -->
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!--日志文件输出的文件名,每天一个文件-->
+      <fileNamePattern>${LOG_PATH}/server-error.log.%d{yyyy-MM-dd}</fileNamePattern>
+      <!-- each file should be at most 100MB, keep 60 days worth of history, but at most 20GB -->
+      <maxHistory>60</maxHistory>
+    </rollingPolicy>
+    <!-- 按照日志级别进行过滤 -->
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <!-- 收集WARN及WARN以上级别的日志 -->
+      <level>WARN</level>
+    </filter>
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>${LOG_PATTERN}</pattern>
+    </encoder>
+  </appender>
+
+  <!--异步到文件-->
+  <appender name="asyncFileAppender" class="ch.qos.logback.classic.AsyncAppender">
+    <discardingThreshold>0</discardingThreshold>
+    <queueSize>500</queueSize>
+    <appender-ref ref="fileAppender"/>
+    <!-- AsyncAppender 打开此配置才能显示行号 （默认关闭：为了性能） -->
+    <includeCallerData>true</includeCallerData>
+  </appender>
+  <!--异步到文件-->
+  <appender name="asyncErrorAppender" class="ch.qos.logback.classic.AsyncAppender">
+    <discardingThreshold>0</discardingThreshold>
+    <queueSize>500</queueSize>
+    <appender-ref ref="errorAppender"/>
+    <!-- AsyncAppender 打开此配置才能显示行号 （默认关闭：为了性能） -->
+    <includeCallerData>true</includeCallerData>
+  </appender>
+
+  <!-- 邮件 -->
+  <springProperty scope="context" name="smtpHost" source="mail.smtpHost" />
+  <springProperty scope="context" name="username" source="mail.username" />
+  <springProperty scope="context" name="password" source="mail.password" />
+  <springProperty scope="context" name="email_to" source="mail.to" />
+  <springProperty scope="context" name="SSL" source="mail.SSL" />
+  <springProperty scope="context" name="email_subject" source="mail.subject" />
+
+  <!--开发环境:打印控制台-->
+  <springProfile name="default,dev">
+    <!--代码着色-->
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <!-- 打印sql -->
+    <logger name="com.flong" level="DEBUG"/>
+    <root level="info">
+      <appender-ref ref="CONSOLE"/>
+    </root>
+  </springProfile>
+
+  
+   <springProfile name="dev">
+    <!-- 打印sql -->
+    <logger name="com.flong" level="DEBUG"/>
+    <root level="info">
+     	<appender-ref ref="CONSOLE"/>
+		<appender-ref ref="FILE"/>
+    </root>
+  </springProfile>
+   
+
+</configuration>

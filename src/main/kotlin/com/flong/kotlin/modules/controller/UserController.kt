@@ -12,14 +12,22 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.RequestBody
+import org.slf4j.LoggerFactory
+import org.slf4j.Logger
 
 
 @RestController
 @RequestMapping("/rest")
 open class UserController : BaseController(){
 	
+	
+	companion object {
+		var DEFAULT_CHARSET = "UTF-8";
+		private val logger: Logger = LoggerFactory.getLogger(UserController::class.java)
+	}
+	
+	
     @Autowired private lateinit var userService: UserService
- 
 	
 	@RequestMapping("/list1")
     fun list1():  String{
@@ -65,6 +73,8 @@ open class UserController : BaseController(){
     //分页查询
 	@RequestMapping("listPage")
     fun listPage(query :UserQuery) :PageVO<UserRespVo> ? {
+		
+		logger.info("分页查询")
     	var listPage = userService.listPage(query);
         return listPage;
     }

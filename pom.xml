@@ -136,11 +136,11 @@
 			<version>2.6</version>
 		</dependency>
 
-		 <!-- 简化 lombok -->
+		 <!-- 简化 lombok 
 		<dependency>
 		  <groupId>org.projectlombok</groupId>
 		  <artifactId>lombok</artifactId>
-		</dependency>
+		</dependency>-->
 		<dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>

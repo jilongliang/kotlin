@@ -6,7 +6,6 @@ import com.flong.kotlin.core.exception.CommMsgCode;
 import com.flong.kotlin.core.exception.MsgCode
 import com.flong.kotlin.core.vo.ErrorResp
 import com.flong.kotlin.utils.ObjectUtil
-import lombok.extern.slf4j.Slf4j
 import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
@@ -24,7 +23,6 @@ import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import javax.validation.ConstraintViolationException
 
-@Slf4j
 @RestControllerAdvice
 class ExceptionAdvice{
 

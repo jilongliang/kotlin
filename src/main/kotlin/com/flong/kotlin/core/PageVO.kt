@@ -1,9 +1,6 @@
 package com.flong.kotlin.core
 
 import com.baomidou.mybatisplus.plugins.Page
-import lombok.Data
-
-@Data
 open class PageVO<E>  {
 
 	/**

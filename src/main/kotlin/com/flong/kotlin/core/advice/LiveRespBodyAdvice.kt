@@ -2,7 +2,6 @@ package com.flong.kotlin.core.advice
 
 import com.flong.kotlin.core.vo.LiveResp
 import com.flong.kotlin.core.vo.ErrorResp
-import lombok.extern.slf4j.Slf4j
 import org.springframework.core.MethodParameter
 import org.springframework.core.annotation.Order
 import org.springframework.http.MediaType
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice
 
 @RestControllerAdvice
-@Slf4j
 @Order(Integer.MIN_VALUE)
 class LiveRespBodyAdvice : ResponseBodyAdvice<Any> {
 	

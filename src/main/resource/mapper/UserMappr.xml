@@ -8,7 +8,7 @@
 	<sql id="find_AS_R">
 	    <![CDATA[
 	    	SELECT A.user_Id as userId, A.USER_NAME as userName, 
-	    	A.PASS_WORD as passWord,is_deleted as isDeleted,
+	    	A.PASS_WORD as passWord,is_deleted as delFlag,
 	    	A.create_time as createTime
 	    ]]>
 	</sql>

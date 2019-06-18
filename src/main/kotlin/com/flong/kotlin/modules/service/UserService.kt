@@ -56,7 +56,7 @@ open class UserService : BaseService<IUserMapper,User,UserQuery>() {
 	//插入用户
 	open fun addUser() {
 		var userId = IdWorker.getId();
-		var u = User(userId, "liangjl", "123456",null, Date());
+		var u = User(userId, "liangjl", "123456","1", Date());
 		var json = JSON.toJSONString(u);
 		println(json)
 		add(u);

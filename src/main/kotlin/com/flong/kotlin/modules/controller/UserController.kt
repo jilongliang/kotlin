@@ -67,6 +67,11 @@ open class UserController : BaseController(){
 	//查询所有
 	@RequestMapping("/queryAllUser")
     fun queryAllUser():List<User>?{
+		var list =userService.queryAllUser()
+		
+	 
+		println("删除字段=="+list)
+		
 		return userService.queryAllUser()
     }
 	

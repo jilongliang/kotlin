@@ -12,7 +12,7 @@ data class UserRespVo constructor(
 	var userName: String? = null,//用户名
 	var passWord: String? = null,//密码
 	@field:JSONField(name="isDeleted")
-	var isDeleted: String? = null,//是否删除
+    var delFlag: String? = null,//是否删除
 	var createTime: Date? = null //创建时间,允许为空,让数据库自动生成即可
 	):Serializable{
 	

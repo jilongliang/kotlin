@@ -40,10 +40,13 @@ data class User constructor(
 	@ApiModelProperty(value = "用户密码",notes ="用户密码")
 	var passWord: String? = null,//密码
 	
-	@TableLogic
-	@JSONField(name = "isDeleted")
 	@ApiModelProperty(value = "删除状态,0-未删除,1-已删除",notes ="删除状态,0-未删除,1-已删除")
-	var isDeleted: Int? = null,//删除
+	@TableLogic //mybatisplus的逻辑删除标识
+	//指定表字段进行绑定实体字段属性，is_deleted表示在表实在存在的字段.
+	@TableField(value="is_deleted")
+	//转换成跟数据库表一样的属性字段
+	@field:JSONField(name="isDeleted")
+	var delFlag: String? = null,//删除
 	
 	@ApiModelProperty(value = "创建时间",notes ="创建时间")
 	var createTime: Date? = null //创建时间,允许为空,让数据库自动生成即可
@@ -53,7 +56,7 @@ data class User constructor(
  
 	//手动重写toString方法
 	override fun toString(): String {
-		return "[User(userId = $userId,userName = $userName, passWord=$passWord,isDeleted=$isDeleted,createTime=$createTime),]"
+		return "[User(userId = $userId,userName = $userName, passWord=$passWord,isDeleted=$delFlag,createTime=$createTime)]"
 	}
 
 	//equals
@@ -64,7 +67,7 @@ data class User constructor(
         if (userId != other.userId) return false
         if (userName != other.userName) return false
 		if (passWord != other.passWord) return false
-		if (isDeleted != other.isDeleted) return false
+		if (delFlag != other.delFlag) return false
 		if (createTime != other.createTime) return false
         return true
     }
@@ -73,7 +76,7 @@ data class User constructor(
         var result = userId?.hashCode() ?: 0
         result = 31 * result + (userName?.hashCode() ?: 0)
         result = 31 * result + (passWord?.hashCode() ?: 0)
-        result = 31 * result + (isDeleted?.hashCode() ?: 0)
+        result = 31 * result + (delFlag?.hashCode() ?: 0)
         result = 31 * result + (createTime?.hashCode() ?: 0)
         
         return result

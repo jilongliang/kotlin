@@ -29,7 +29,7 @@ data  class User constructor(
  
 	//手动重写toString方法
 	override fun toString(): String {
-		return "[User(userId = $userId,userName = $userName, passWord=$passWord,isDeleted=$isDeleted,createTime=$createTime),]"
+		return "[User(userId = $userId,userName = $userName, passWord=$passWord,isDeleted=$isDeleted,createTime=$createTime)]"
 	}
 
 	//equals

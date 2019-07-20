@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.data.redis.core.RedisTemplate
 
 
 @RestController
@@ -25,6 +26,10 @@ open class UserController : BaseController() {
 
 	@Autowired lateinit var userService: UserService
 	@Autowired lateinit var stringRedisTemplate: StringRedisTemplate
+	
+	//RedisTemplateK, V>这个类由于有K与V，下面的做法是必须要指定Key-Value
+	//2 type arguments expected for class RedisTemplate
+	@Autowired lateinit var redisTemplate : RedisTemplate<String,Any>;
 	
 	companion object {
 		private val log: Logger = LoggerFactory.getLogger(UserController::class.java)
@@ -96,6 +101,22 @@ open class UserController : BaseController() {
 		if (user == null) {
 			var userObj  = userService.getUserId(userId)
 			stringRedisTemplate.opsForValue().set(redis_key, userObj.toString())
+			print("从DB获取----" + JSON.toJSONString(userObj));
+
+		} else {
+			print("从缓存获取----" + JSON.toJSONString(user));
+		}
+
+	}
+	
+	//简单的缓存测试
+	@RequestMapping("/getUserByRedis1/{userId}")
+	fun getUserByRedis1(@PathVariable("userId") userId: Long) {
+		var redis_key 	= USER_REDIS_KEY + "_" + userId;
+		var user		= redisTemplate.opsForValue().get(redis_key)
+		if (user == null) {
+			var userObj  = userService.getUserId(userId)
+			redisTemplate.opsForValue().set(redis_key, userObj.toString())
 			print("从DB获取----" + JSON.toJSONString(userObj));
 
 		} else {

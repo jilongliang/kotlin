@@ -3,12 +3,14 @@
 
 *  Redis是一个开源的使用ANSI [C语言](http://baike.baidu.com/view/1219.htm)编写、支持网络、可基于内存亦可持久化的日志型、Key-Value[数据库](http://baike.baidu.com/view/1088.htm)，并提供多种语言的API。从2010年3月15日起，Redis的开发工作由VMware主持。从2013年5月开始，Redis的开发由Pivotal赞助
 
+* 工程基于基础架构 [Kotlin +SpringBoot + MyBatis完美搭建最简洁最酷的前后端分离框架](https://www.jianshu.com/p/0acd593fd11e)进行完善
+
 
 # 2、Redis开发者
 *  redis 的作者，叫Salvatore Sanfilippo，来自意大利的西西里岛，现在居住在卡塔尼亚。目前供职于Pivotal公司。他使用的网名是antirez。
 
 # 3、Redis安装
-* Redis安装与其他知识点请参考几年前我编写文档 ，这里不做太多的描述，主要讲解在kotlin+SpringBoot然后搭建Redis与遇到的问题
+* Redis安装与其他知识点请参考几年前我编写文档 `Redis Detailed operating instruction.pdf`，这里不做太多的描述，主要讲解在kotlin+SpringBoot然后搭建Redis与遇到的问题
 > [Redis详细使用说明书.pdf](https://github.com/jilongliang/kotlin/blob/dev-redis/src/main/resource/Redis%20Detailed%20operating%20instruction.pdf)
 
 
@@ -31,7 +33,10 @@
 * Redis的原子性
 * Redis持久化有RDB与AOF方式
 
-# 8、Kotlin与Redis的代码实现
+# 8、工程结构
+![工程结构.png](https://upload-images.jianshu.io/upload_images/14586304-93ce6656c02154bd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+# 9、Kotlin与Redis的代码实现
 * ##### Redis 依赖的Jar配置
 ```
 <!-- Spring Boot Redis 依赖 -->
@@ -240,7 +245,12 @@ com.flong.kotlin.core.redis.RedisAutoConfiguration
 * #### Controller代码
 ```
 @Autowired lateinit var stringRedisTemplate: StringRedisTemplate
-//简单的缓存测试
+
+//RedisTemplateK, V>这个类由于有K与V，下面的做法是必须要指定Key-Value
+//2 type arguments expected for class RedisTemplate
+@Autowired lateinit var redisTemplate : RedisTemplate<String,Any>;
+
+    //简单的缓存测试1
 	@RequestMapping("/getUserByRedis/{userId}")
 	fun getUserByRedis(@PathVariable("userId") userId: Long) {
 		var redis_key 	= USER_REDIS_KEY + "_" + userId;
@@ -255,16 +265,40 @@ com.flong.kotlin.core.redis.RedisAutoConfiguration
 		}
 
 	}
+
+
+    //简单的缓存测试2
+	@RequestMapping("/getUserByRedis1/{userId}")
+	fun getUserByRedis1(@PathVariable("userId") userId: Long) {
+		var redis_key 	= USER_REDIS_KEY + "_" + userId;
+		var user		= redisTemplate.opsForValue().get(redis_key)
+		if (user == null) {
+			var userObj  = userService.getUserId(userId)
+			redisTemplate.opsForValue().set(redis_key, userObj.toString())
+			print("从DB获取----" + JSON.toJSONString(userObj));
+
+		} else {
+			print("从缓存获取----" + JSON.toJSONString(user));
+		}
+
+	}
 ```
+> 注意：RedisTemplateK, V>这个类由于有K与V，下面的做法是必须要指定Key-Value 2 type arguments expected for class RedisTemplate
+* #### 运行结果
+ 
+* ![运行结果.png](https://upload-images.jianshu.io/upload_images/14586304-d4db20640f486808.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+
+
+# 10、参考文章
 > [参考Springboot2.0 使用redis @cacheable等注解缓存博客](https://blog.csdn.net/New_CJ/article/details/84892543)
 
-# 9 、工程架构与源代码
-> 工程基础架构 [Kotlin +SpringBoot + MyBatis完美搭建最简洁最酷的前后端分离框架](https://www.jianshu.com/p/0acd593fd11e)
+# 11、工程架构源代码
 
 > [Kotlin+SpringBoot与Redis整合工程源代码](https://github.com/jilongliang/kotlin/tree/dev-redis)
 
 
-# 10 、总结与建议
+# 12 、总结与建议
 * 1 、以上问题根据搭建 kotlin与Redis实际情况进行总结整理，除了技术问题查很多网上资料，通过自身进行学习之后梳理与分享。
 
 * 2、 在学习过程中也遇到很多困难和疑点，如有问题或误点，望各位老司机多多指出或者提出建议。本人会采纳各种好建议和正确方式不断完善现况，人在成长过程中的需要优质的养料。

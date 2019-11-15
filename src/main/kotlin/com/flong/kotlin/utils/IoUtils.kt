@@ -142,33 +142,31 @@ object IoUtils{
 	
 	
 	//通过闭包返回来实现
-	fun writeClo(`in`: InputStream, output: OutputStream) {
-		try {
-			var read: Int = -1
-			`in`.use { input ->
-				output.use {
-					while ({ read = input.read();read }() != -1) {
-						it.write(read)
-					}
-				}
-			}
-		} catch (t: Throwable) {
-			t.printStackTrace()
-		}
-	}
+	fun writeClo(`in`: InputStream, output: OutputStream) = try {
+        var read: Int = -1
+        /*`in`.use { input ->
+            output.use {
+                while ({ read = input.read();read }() != -1) {
+                    it.write(read)
+                }
+            }
+        }*/
+    } catch (t: Throwable) {
+        t.printStackTrace()
+    }
 
 	//通过正常写法来实现
 	fun writeDef(`in`: InputStream, output: OutputStream) {
 		try {
 			var read: Int = `in`.read()
-			`in`.use { input ->
+			/*`in`.use { input ->
 				output.use {
 					while (read != -1) {
 						it.write(read)
 						read = input.read()
 					}
 				}
-			}
+			}*/
 		} catch (t: Throwable) {
 			t.printStackTrace()
 		}
@@ -180,13 +178,13 @@ object IoUtils{
 	fun writeAlso(`in`: InputStream, output: OutputStream) {
 		try {
 			var read: Int = -1
-			`in`.use { input ->
+			/*`in`.use { input ->
 				output.use {
 					while (input.read().also { read = it } != -1) {
 						it.write(read)
 					}
 				}
-			}
+			}*/
 		} catch (t: Throwable) {
 			t.printStackTrace()
 		}
@@ -244,8 +242,8 @@ object IoUtils{
 		var bodyParams = bodyParameters  as java.lang.String
 		var out = DataOutputStream(outputStream);
 		out.write(bodyParams.getBytes(encoding))
-		out.flush();
-		out.close();
+		out.flush()
+		out.close()
 	}
 
 

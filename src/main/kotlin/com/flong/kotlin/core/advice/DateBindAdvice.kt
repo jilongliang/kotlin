@@ -28,9 +28,9 @@ class DateBindAdvice {
 class DatePropertyEditor : PropertyEditorSupport() {
 	override fun setAsText(text: String) {
 		if (StringUtils.isBlank(text)) {
-			return;
+			return
 		}
 		var date = DateUtils.parseDate(text, "yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", "yyyy-MM");
-		setValue(date);
+		setValue(date)
 	}
 } 

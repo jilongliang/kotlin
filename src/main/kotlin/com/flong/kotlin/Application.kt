@@ -22,17 +22,17 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver
 @EnableScheduling
 @EnableAutoConfiguration  //启用读取配置
 @ComponentScan("com.flong.kotlin")  //扫描com.flong文件目录下
-@SpringBootApplication(scanBasePackages = ["com.flong.kotlin"] )
-//@SpringBootApplication(scanBasePackages = arrayOf("com.flong.kotlin")) 这种写法也OK
+//@SpringBootApplication(scanBasePackages = ["com.flong.kotlin"] )// 这种写法也OK
+@SpringBootApplication(scanBasePackages = arrayOf("com.flong.kotlin"))
 open class Application {
 
 
 	@Bean
 	open fun jspViewResolver(): InternalResourceViewResolver {
-		var resolver = InternalResourceViewResolver();
-		resolver.setPrefix("/WEB-INF/views/");
-		resolver.setSuffix(".jsp");
-		return resolver;
+		var resolver = InternalResourceViewResolver()
+		resolver.setPrefix("/WEB-INF/views/")
+		resolver.setSuffix(".jsp")
+		return resolver
 	}
 
 	//静态类

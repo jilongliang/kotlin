@@ -1,6 +1,5 @@
 package com.flong.kotlin.core.advice
 
-import com.flong.kotlin.utils.ObjectUtil
 import org.apache.commons.io.IOUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -57,8 +56,8 @@ class LiveRequestBodyAdvice : RequestBodyAdvice {
 			this.headers = headers;
 			this.body = body;
 		}
-		open override fun getBody(): InputStream 	= this.body
-		open override fun getHeaders(): HttpHeaders = this.headers
+		override fun getBody(): InputStream = this.body
+		override fun getHeaders(): HttpHeaders = this.headers
 	}
 
 }

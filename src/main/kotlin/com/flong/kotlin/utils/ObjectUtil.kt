@@ -86,10 +86,10 @@ open class ObjectUtil {
         val idArray: ArrayList<BigInteger> = arrayListOf()
         var id: BigInteger?
         for (i: Int in array.indices) {
-            id = array[i].toBigIntegerOrNull()
+           /* id = array[i].toBigIntegerOrNull()
             if (null != id && BigInteger.ZERO < id) {
                 idArray.add(id)
-            }
+            }*/
         }
         return idArray
     }
@@ -106,10 +106,10 @@ open class ObjectUtil {
         val idArray: Array<BigInteger> = Array(array.size, { BigInteger.ZERO })
         var id: BigInteger?
         for (i: Int in array.indices) {
-            id = array[i].toBigIntegerOrNull()
+           /* id = array[i].toBigIntegerOrNull()
             if (null != id && BigInteger.ZERO < id) {
                 idArray[i] = id
-            }
+            }*/
         }
         return idArray
     }
@@ -127,10 +127,10 @@ open class ObjectUtil {
         val idArray: Array<BigInteger> = Array(strAry.size, { BigInteger.ZERO })
         var id: BigInteger?
         for ((i: Int, strValue: String) in strAry.withIndex()) {
-            id = strValue.toBigIntegerOrNull()
+           /* id = strValue.toBigIntegerOrNull()
             if (null != id && BigInteger.ZERO < id) {
                 idArray[i] = id
-            }
+            }*/
         }
         return idArray
     }

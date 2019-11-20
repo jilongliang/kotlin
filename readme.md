@@ -9,7 +9,7 @@
 *  7、作为技术人员，希望为kotlin的生态作出一份渺小的贡献。
 
 
-##二、技术选型
+## 二、技术选型
  ![Kotlin框架.png](https://upload-images.jianshu.io/upload_images/14586304-3b5c6736f45dc432.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 * 解析器：JSOUP、FastJSON
@@ -22,7 +22,7 @@
 
 
 
-##三、kotlin背景简要描述
+## 三、kotlin背景简要描述
 * Kotlin 是一种在 Java 虚拟机上运行的静态类型编程语言，被称之为 Android 世界的Swift，由 JetBrains 设计开发并开源。Kotlin 可以编译成Java字节码，也可以编译成 JavaScript，方便在没有 JVM 的设备上运行。
 *  在Google I/O 2017中，Google 宣布 Kotlin 成为 Android 官方开发语言。
 * Kotlin支持表达式语法编程非常友好,以简洁代码等众多方面强大功能，吸引很多开发者的青睐。

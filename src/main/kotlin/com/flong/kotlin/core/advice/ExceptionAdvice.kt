@@ -36,7 +36,7 @@ class ExceptionAdvice{
 		
 		createLog(e, uri, "找不到请求的方法");
 		
-		return ErrorResp(CommMsgCode.NOT_SUPPORTED.code!!, CommMsgCode.DB_ERROR.message!!)
+		return ErrorResp(CommMsgCode.NOT_SUPPORTED.code!!, CommMsgCode.NOT_SUPPORTED.message!!)
 	}
 
 	//is 相当于Java的 instanceof ，as就是强制转换(对象)

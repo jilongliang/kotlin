@@ -20,29 +20,29 @@ import java.lang.reflect.Type
 class LiveRequestBodyAdvice : RequestBodyAdvice {
 
 	companion object {
-		var DEFAULT_CHARSET = "UTF-8";
+		var DEFAULT_CHARSET = "UTF-8"
 		private val logger: Logger = LoggerFactory.getLogger(LiveRequestBodyAdvice::class.java)
 	}
 
 	override fun handleEmptyBody(body: Any?, inputMessage: HttpInputMessage?, parameter: MethodParameter?, targetType: Type?, converterType: Class<out HttpMessageConverter<*>>?): Any? {
-		return body;
+		return body
 	}
 
 	override fun afterBodyRead(body: Any?, inputMessage: HttpInputMessage?, parameter: MethodParameter?, targetType: Type?, converterType: Class<out HttpMessageConverter<*>>?): Any? {
-		return body;
+		return body
 	}
 
 	override fun beforeBodyRead(inputMessage: HttpInputMessage?, parameter: MethodParameter?, targetType: Type?, converterType: Class<out HttpMessageConverter<*>>?): HttpInputMessage? {
-		var body 	= IOUtils.toString(inputMessage?.getBody(), DEFAULT_CHARSET) as java.lang.String;
-		var headers = inputMessage!!.getHeaders();
-		var bis 	= ByteArrayInputStream(body.getBytes(DEFAULT_CHARSET));
-		logger.info("request body params : {}", body);
+		var body 	= IOUtils.toString(inputMessage?.getBody(), DEFAULT_CHARSET) as java.lang.String
+		var headers = inputMessage!!.getHeaders()
+		var bis 	= ByteArrayInputStream(body.getBytes(DEFAULT_CHARSET))
+		logger.info("request body params : {}", body)
 
-		return InputMessage(headers, bis);
+		return InputMessage(headers, bis)
 	}
 
 	override fun supports(methodParameter: MethodParameter?, targetType: Type?, converterType: Class<out HttpMessageConverter<*>>?): Boolean {
-		return true;
+		return true
 	}
 
 
@@ -53,8 +53,8 @@ class LiveRequestBodyAdvice : RequestBodyAdvice {
 		
 		//构造方法
 		constructor(headers: HttpHeaders, body: InputStream) {
-			this.headers = headers;
-			this.body = body;
+			this.headers = headers
+			this.body = body
 		}
 		override fun getBody(): InputStream = this.body
 		override fun getHeaders(): HttpHeaders = this.headers

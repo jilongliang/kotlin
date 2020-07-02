@@ -1,19 +1,18 @@
 package com.flong.kotlin.core.advice
 
-import java.beans.PropertyEditorSupport;
-import java.util.Date;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.InitBinder;
+import org.apache.commons.lang3.StringUtils
+import org.apache.commons.lang3.time.DateUtils
+import org.springframework.web.bind.WebDataBinder
+import org.springframework.web.bind.annotation.ControllerAdvice
+import org.springframework.web.bind.annotation.InitBinder
+import java.beans.PropertyEditorSupport
+import java.util.*
 
 /**
  * 全局日期绑定
  */
 @ControllerAdvice
 class DateBindAdvice {
-
 
 	@InitBinder
 	fun dateBinder(binder: WebDataBinder): Unit {
@@ -30,7 +29,7 @@ class DatePropertyEditor : PropertyEditorSupport() {
 		if (StringUtils.isBlank(text)) {
 			return
 		}
-		var date = DateUtils.parseDate(text, "yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", "yyyy-MM");
+		var date = DateUtils.parseDate(text, "yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", "yyyy-MM")
 		setValue(date)
 	}
 } 

@@ -1,24 +1,9 @@
 package com.flong.kotlin.utils.security
 
 
-import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.cert.CertificateException;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
+import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
+import javax.net.ssl.*
 
 object SSLContextSecurity {
 

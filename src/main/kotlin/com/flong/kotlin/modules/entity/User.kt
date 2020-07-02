@@ -14,7 +14,6 @@ import com.alibaba.fastjson.annotation.JSONField
  *https://www.cnblogs.com/liuliqianxiao/p/7152773.html
  *注意mybatis查询数据，然后封装实体的时候，构造方法这里有点儿坑，查询的字段必须与构造方法一直。
  */
-
 @TableName("t_user")
 data  class User constructor(
 	@TableId(value = "user_id", type = IdType.ID_WORKER)

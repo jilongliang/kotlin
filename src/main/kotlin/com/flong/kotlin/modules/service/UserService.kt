@@ -26,46 +26,48 @@ import java.util.Date
 @Service
 open class UserService : BaseService<IUserMapper,User,UserQuery>() {
 
-
 	//Kotlin lateinit 和 by lazy 的区别
 	//http://blog.csdn.net/Sherlbon/article/details/72769843
-	@Autowired lateinit var userMapper: IUserMapper;
+	@Autowired lateinit var userMapper: IUserMapper
 
 	//根据
 	open fun queryAllUser(): List<User>? {
-		var wrapper = createWrapper();
-		return this.selectList(wrapper);
+		var wrapper = createWrapper()
+		return this.selectList(wrapper)
 	}
 
-	
 	open fun listPage(query : UserQuery) : PageVO<UserRespVo> ? {
-		var page = PageUtil().getPage(query)  ;// 设置分页
-		
-		var dataList = userMapper.getUserList(query, page!!);//page!!强制告诉编辑器不可能为空
+		// 设置分页
+		var page = PageUtil().getPage(query)
+
+		//page!!强制告诉编辑器不可能为空
+		var dataList = userMapper.getUserList(query, page!!)
 	    
-		var json = JSON.toJSONString(dataList);
+		var json = JSON.toJSONString(dataList)
 		println(json)
-		return  PageVO(dataList, page);// 获取分页数和总条数
+		// 获取分页数和总条数
+		return  PageVO(dataList, page)
 	}
 		
 
 	open fun getUserId(userId: Long): User? {
-		return get(userId);
+		return get(userId)
 	}
 
 	//插入用户
 	open fun addUser() {
 		var userId = IdWorker.getId();
-		var u = User(userId, "liangjl", "123456",null, Date());
+		var u = User(userId, "liangjl", "123456",null, Date())
 		var json = JSON.toJSONString(u);
 		println(json)
-		add(u);
+		add(u)
 	}
 
 	fun createWrapper(): Wrapper<User> {
-		var wrapper = EntityWrapper<User>();
-		wrapper.setEntity(User());//设置实体
-		return wrapper;
+		var wrapper = EntityWrapper<User>()
+		//设置实体
+		wrapper.setEntity(User())
+		return wrapper
 	}
 
 }

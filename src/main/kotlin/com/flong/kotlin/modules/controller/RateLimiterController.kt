@@ -15,7 +15,7 @@ import java.util.*
 
 
 @RestController
-@RequestMapping("limit")
+@RequestMapping("rest")
 class RateLimiterController {
 
     companion object {
@@ -25,8 +25,8 @@ class RateLimiterController {
     @Autowired
     private val redisTemplate: RedisTemplate<*, *>? = null
 
-    @GetMapping(value = "/test")
-    @RateLimiter(key = "test", time = 10, count = 1)
+    @GetMapping(value = "/limit")
+    @RateLimiter(key = "limit", time = 10, count = 1)
     fun test(): ResponseEntity<Any> {
 
         val date = DateFormatUtils.format(Date(), "yyyy-MM-dd HH:mm:ss.SSS")

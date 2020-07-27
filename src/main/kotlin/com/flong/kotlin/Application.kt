@@ -22,8 +22,8 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver
 @EnableScheduling
 @EnableAutoConfiguration  //启用读取配置
 @ComponentScan("com.flong.kotlin")  //扫描com.flong文件目录下
-@SpringBootApplication(scanBasePackages = ["com.flong.kotlin"] )
-//@SpringBootApplication(scanBasePackages = arrayOf("com.flong.kotlin")) 这种写法也OK
+//@SpringBootApplication(scanBasePackages = ["com.flong.kotlin"] )
+@SpringBootApplication(scanBasePackages = arrayOf("com.flong.kotlin")) //这种写法也OK
 open class Application {
 
 

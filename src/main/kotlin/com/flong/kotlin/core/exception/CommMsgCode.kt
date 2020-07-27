@@ -45,20 +45,16 @@ enum class CommMsgCode() {
 	 */
 	OTHER_ERROR(900000, "其它错误"),
 	
-	
-	
 	;
 
-	
-	
-	
 
+	
 	var code: Int? = null
 	var message: String? = null
 
 	constructor(code: Int, message: String) {
-		this.code = code;
-		this.message = message;
+		this.code = code
+		this.message = message
 	}
 
 	

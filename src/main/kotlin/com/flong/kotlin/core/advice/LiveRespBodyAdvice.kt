@@ -17,7 +17,7 @@ class LiveRespBodyAdvice : ResponseBodyAdvice<Any> {
 	
 	companion object {
 		//const 关键字用来修饰常量，且只能修饰  val，不能修饰var,  companion object 的名字可以省略，可以使用 Companion来指代
-		 const val LIFE_PACKAGE = "com.flong.kotlin";
+		 const val LIFE_PACKAGE = "com.flong.kotlin"
     }
 	
 	//Class<out HttpMessageConverter<*>>?) 相当于Java的  Class<? extends HttpMessageConverter<?>>
@@ -25,22 +25,22 @@ class LiveRespBodyAdvice : ResponseBodyAdvice<Any> {
 	//*，相当于Java的?
 	override fun supports(methodParameter: MethodParameter?, converterType: Class<out HttpMessageConverter<*>>?): Boolean {
 		//处理类型 
-		var className 	= methodParameter?.getContainingClass()?.name;
-		var sw 			= className?.startsWith(LIFE_PACKAGE);
-		var eaf 		= ErrorResp::class.java.isAssignableFrom(methodParameter?.getParameterType());
-		var laf 		= LiveResp::class.java.isAssignableFrom(methodParameter?.getParameterType());
-		var saf 		= String::class.java.isAssignableFrom(methodParameter?.getParameterType());
+		var className 	= methodParameter?.getContainingClass()?.name
+		var sw 			= className?.startsWith(LIFE_PACKAGE)
+		var eaf 		= ErrorResp::class.java.isAssignableFrom(methodParameter?.getParameterType())
+		var laf 		= LiveResp::class.java.isAssignableFrom(methodParameter?.getParameterType())
+		var saf 		= String::class.java.isAssignableFrom(methodParameter?.getParameterType())
 		
-		return (sw==true && !eaf && !laf && !saf);
+		return (sw==true && !eaf && !laf && !saf)
 	}
 	
 	override fun beforeBodyWrite(body: Any?, returnType: MethodParameter?, selectedContentType: MediaType?, selectedConverterType: Class<out HttpMessageConverter<*>>?, request: ServerHttpRequest?, response: ServerHttpResponse?): Any? {
 		//?： elvis操作符(猫王）,age?.toInt()表示if(age!=null) age.toInt else 返回 默认就给10
-		//var path = request?.getURI()?.getPath();
+		//var path = request?.getURI()?.getPath()
 		if(body != null){
-			return LiveResp(body);
+			return LiveResp(body)
 		}else{
-			return LiveResp("");
+			return LiveResp("")
 		}
 		 
 	}

@@ -86,20 +86,20 @@ open class RedisTemplateDataSource : CachingConfigurerSupport  {
 	 */
 	@Bean(name = arrayOf("jedisPoolConfig"))
 	open fun jedisPoolConfig(): JedisPoolConfig {
-		log.info("初始化JedisPoolConfig");
-		var jedisPoolConfig = JedisPoolConfig();
+		log.info("初始化JedisPoolConfig")
+		var jedisPoolConfig = JedisPoolConfig()
 		// 连接池最大连接数（使用负值表示没有限制）
-		jedisPoolConfig.setMaxTotal(redisProperties.maxTotal);
+		jedisPoolConfig.setMaxTotal(redisProperties.maxTotal)
 		// 连接池最大阻塞等待时间（使用负值表示没有限制）
-		jedisPoolConfig.setMaxWaitMillis(redisProperties.maxWaitMillis.toLong());
+		jedisPoolConfig.setMaxWaitMillis(redisProperties.maxWaitMillis.toLong())
 		// 连接池中的最大空闲连接
-		jedisPoolConfig.setMaxIdle(redisProperties.maxIdle);
+		jedisPoolConfig.setMaxIdle(redisProperties.maxIdle)
 		// 连接池中的最小空闲连接
-		jedisPoolConfig.setMinIdle(redisProperties.minIdle);
-		// jedisPoolConfig.setTestOnBorrow(true);
-		// jedisPoolConfig.setTestOnCreate(true);
-		// jedisPoolConfig.setTestWhileIdle(true);
-		return jedisPoolConfig;
+		jedisPoolConfig.setMinIdle(redisProperties.minIdle)
+		// jedisPoolConfig.setTestOnBorrow(true)
+		// jedisPoolConfig.setTestOnCreate(true)
+		// jedisPoolConfig.setTestWhileIdle(true)
+		return jedisPoolConfig
 	}
 
 
@@ -110,12 +110,12 @@ open class RedisTemplateDataSource : CachingConfigurerSupport  {
 	 */
 	@Bean(name = arrayOf("jedisConnectionFactory"))
 	open fun jedisConnectionFactory(@Qualifier(value = "jedisPoolConfig") poolConfig: JedisPoolConfig): RedisConnectionFactory {
-		log.info("初始化RedisConnectionFactory");
-		var jedisConnectionFactory = JedisConnectionFactory(poolConfig);
+		log.info("初始化RedisConnectionFactory")
+		var jedisConnectionFactory = JedisConnectionFactory(poolConfig)
 		jedisConnectionFactory.hostName=redisProperties.host
 		jedisConnectionFactory.port=redisProperties.port
 		jedisConnectionFactory.database=redisProperties.database
-		return jedisConnectionFactory;
+		return jedisConnectionFactory
 	}
 
 	/**
@@ -123,47 +123,47 @@ open class RedisTemplateDataSource : CachingConfigurerSupport  {
 	 * @return
 	 */
 	@Bean(name = arrayOf("redisTemplateStr"))
-	open fun redisTemplateStr(@Qualifier(value = "jedisConnectionFactory") factory: RedisConnectionFactory): RedisTemplate<String, String> {
-		log.info("初始化RedisTemplate");
-		var redisTemplate = RedisTemplate<String, String>();
-		redisTemplate.setConnectionFactory(factory);
-		redisTemplate.setKeySerializer(StringRedisSerializer());
-		redisTemplate.setHashKeySerializer(StringRedisSerializer());
-		redisTemplate.setHashValueSerializer(JdkSerializationRedisSerializer());
-		redisTemplate.setValueSerializer(JdkSerializationRedisSerializer());
-		redisTemplate.afterPropertiesSet();
-		redisTemplate.setEnableTransactionSupport(true);
-		return redisTemplate;
+	open fun redisTemplateStr(@Qualifier(value = "jedisConnectionFactory" ) factory: RedisConnectionFactory): RedisTemplate<String, String> {
+		log.info("初始化RedisTemplate")
+		var redisTemplate = RedisTemplate<String, String>()
+		redisTemplate.setConnectionFactory(factory)
+		redisTemplate.setKeySerializer(StringRedisSerializer())
+		redisTemplate.setHashKeySerializer(StringRedisSerializer())
+		redisTemplate.setHashValueSerializer(JdkSerializationRedisSerializer())
+		redisTemplate.setValueSerializer(JdkSerializationRedisSerializer())
+		redisTemplate.afterPropertiesSet()
+		redisTemplate.setEnableTransactionSupport(true)
+		return redisTemplate
 	}
 
 
     @Bean
 	override
 	fun cacheManager() : CacheManager{ 
-        var redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(5));
+        var redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(5))
         return RedisCacheManager.builder(RedisCacheWriter.nonLockingRedisCacheWriter(jedisConnectionFactory(jedisPoolConfig())))
-               .cacheDefaults(redisCacheConfiguration).build();
+               .cacheDefaults(redisCacheConfiguration).build()
     }
  
 	
-	@Bean(value = arrayOf("redisTemplate"))
+	@Bean(name = arrayOf("redisTemplate"))
 	open fun redisTemplate(jedisConnectionFactory: JedisConnectionFactory): RedisTemplate<String, Any> {
 		//设置序列化
-		var jackson2JsonRedisSerializer = Jackson2JsonRedisSerializer(Object::class.java);
-		var om = ObjectMapper();
-		om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-		om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
-		jackson2JsonRedisSerializer.setObjectMapper(om);
+		var jackson2JsonRedisSerializer = Jackson2JsonRedisSerializer(Object::class.java)
+		var om = ObjectMapper()
+		om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY)
+		om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL)
+		jackson2JsonRedisSerializer.setObjectMapper(om)
 		// 配置redisTemplate
-		var redisTemplate = RedisTemplate<String, Any>();
-		redisTemplate.setConnectionFactory(jedisConnectionFactory);
-		var stringSerializer = StringRedisSerializer();
-		redisTemplate.setKeySerializer(stringSerializer); // key序列化
-		redisTemplate.setValueSerializer(jackson2JsonRedisSerializer); // value序列化
-		redisTemplate.setHashKeySerializer(stringSerializer); // Hash key序列化
-		redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer); // Hash value序列化
-		redisTemplate.afterPropertiesSet();
-		return redisTemplate;
+		var redisTemplate = RedisTemplate<String, Any>()
+		redisTemplate.setConnectionFactory(jedisConnectionFactory)
+		var stringSerializer = StringRedisSerializer()
+		redisTemplate.setKeySerializer(stringSerializer) // key序列化
+		redisTemplate.setValueSerializer(jackson2JsonRedisSerializer) // value序列化
+		redisTemplate.setHashKeySerializer(stringSerializer) // Hash key序列化
+		redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer) // Hash value序列化
+		redisTemplate.afterPropertiesSet()
+		return redisTemplate
 	}
 
 

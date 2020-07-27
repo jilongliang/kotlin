@@ -29,13 +29,13 @@ open class UserController : BaseController() {
 	
 	//RedisTemplateK, V>这个类由于有K与V，下面的做法是必须要指定Key-Value
 	//2 type arguments expected for class RedisTemplate
-	@Autowired lateinit var redisTemplate : RedisTemplate<String,Any>;
+	@Autowired lateinit var redisTemplate : RedisTemplate<String,Any>
 	
 	companion object {
 		private val log: Logger = LoggerFactory.getLogger(UserController::class.java)
-		private final var USER_REDIS_KEY 		= "QUERY_USER_REDIS_KEY";
-		private final var USER_REDIS_BACKUP_KEY = "USER_REDIS_BACKUP_KEY";
-		private final var CURRENT_USER 			= "CURRENT_USER";
+		private final var USER_REDIS_KEY 		= "QUERY_USER_REDIS_KEY"
+		private final var USER_REDIS_BACKUP_KEY = "USER_REDIS_BACKUP_KEY"
+		private final var CURRENT_USER 			= "CURRENT_USER"
 	}
 
 	@RequestMapping("/list1")
@@ -52,7 +52,7 @@ open class UserController : BaseController() {
 	//删除
 	@RequestMapping("/deletedById")
 	fun deletedById(userId: Long): Unit {
-		userService.deleteById(userId);
+		userService.deleteById(userId)
 	}
 
 	//更新
@@ -65,9 +65,9 @@ open class UserController : BaseController() {
 	//根据Id查询用户
 	@RequestMapping("/getUserId")
 	fun getUserId(userId: Long): Any? {
-		var user = userService.getUserId(userId);
+		var user = userService.getUserId(userId)
 		if (user == null) {
-			var msgCode = UserMsgCode.FIND_NOT_USER;
+			var msgCode = UserMsgCode.FIND_NOT_USER
 			throw BaseException(msgCode.code!!, msgCode.message!!)
 		}
 		return userService.getUserId(userId)
@@ -82,8 +82,8 @@ open class UserController : BaseController() {
 	//分页查询
 	@RequestMapping("listPage")
 	fun listPage(query: UserQuery): PageVO<UserRespVo>? {
-		var listPage = userService.listPage(query);
-		return listPage;
+		var listPage = userService.listPage(query)
+		return listPage
 	}
 
 
@@ -96,15 +96,15 @@ open class UserController : BaseController() {
 	//简单的缓存测试
 	@RequestMapping("/getUserByRedis/{userId}")
 	fun getUserByRedis(@PathVariable("userId") userId: Long) {
-		var redis_key 	= USER_REDIS_KEY + "_" + userId;
+		var redis_key 	= USER_REDIS_KEY + "_" + userId
 		var user		= stringRedisTemplate.opsForValue().get(redis_key)
 		if (user == null) {
 			var userObj  = userService.getUserId(userId)
 			stringRedisTemplate.opsForValue().set(redis_key, userObj.toString())
-			print("从DB获取----" + JSON.toJSONString(userObj));
+			print("从DB获取----" + JSON.toJSONString(userObj))
 
 		} else {
-			print("从缓存获取----" + JSON.toJSONString(user));
+			print("从缓存获取----" + JSON.toJSONString(user))
 		}
 
 	}
@@ -112,15 +112,15 @@ open class UserController : BaseController() {
 	//简单的缓存测试
 	@RequestMapping("/getUserByRedis1/{userId}")
 	fun getUserByRedis1(@PathVariable("userId") userId: Long) {
-		var redis_key 	= USER_REDIS_KEY + "_" + userId;
+		var redis_key 	= USER_REDIS_KEY + "_" + userId
 		var user		= redisTemplate.opsForValue().get(redis_key)
 		if (user == null) {
 			var userObj  = userService.getUserId(userId)
 			redisTemplate.opsForValue().set(redis_key, userObj.toString())
-			print("从DB获取----" + JSON.toJSONString(userObj));
+			print("从DB获取----" + JSON.toJSONString(userObj))
 
 		} else {
-			print("从缓存获取----" + JSON.toJSONString(user));
+			print("从缓存获取----" + JSON.toJSONString(user))
 		}
 
 	}

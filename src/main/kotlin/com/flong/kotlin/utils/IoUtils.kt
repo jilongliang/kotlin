@@ -145,13 +145,13 @@ object IoUtils{
 	fun writeClo(`in`: InputStream, output: OutputStream) {
 		try {
 			var read: Int = -1
-			`in`.use { input ->
+			/*`in`.use { input ->
 				output.use {
 					while ({ read = input.read();read }() != -1) {
 						it.write(read)
 					}
 				}
-			}
+			}*/
 		} catch (t: Throwable) {
 			t.printStackTrace()
 		}
@@ -161,14 +161,14 @@ object IoUtils{
 	fun writeDef(`in`: InputStream, output: OutputStream) {
 		try {
 			var read: Int = `in`.read()
-			`in`.use { input ->
+			/*`in`.use { input ->
 				output.use {
 					while (read != -1) {
 						it.write(read)
 						read = input.read()
 					}
 				}
-			}
+			}*/
 		} catch (t: Throwable) {
 			t.printStackTrace()
 		}
@@ -180,13 +180,13 @@ object IoUtils{
 	fun writeAlso(`in`: InputStream, output: OutputStream) {
 		try {
 			var read: Int = -1
-			`in`.use { input ->
+			/*`in`.use { input ->
 				output.use {
 					while (input.read().also { read = it } != -1) {
 						it.write(read)
 					}
 				}
-			}
+			}*/
 		} catch (t: Throwable) {
 			t.printStackTrace()
 		}

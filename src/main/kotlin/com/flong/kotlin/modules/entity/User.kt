@@ -1,13 +1,13 @@
 package com.flong.kotlin.modules.entity
 
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
-import com.baomidou.mybatisplus.enums.IdType;
-import com.baomidou.mybatisplus.annotations.TableLogic;
-import java.io.Serializable
-import java.util.Date
 import com.alibaba.fastjson.annotation.JSONField
+import com.baomidou.mybatisplus.annotations.TableId
+import com.baomidou.mybatisplus.annotations.TableLogic
+import com.baomidou.mybatisplus.annotations.TableName
+import com.baomidou.mybatisplus.enums.IdType
+import java.io.Serializable
+import java.util.*
+
 /**
  *data保持数据data class就是一个类中只包含一些数据字段，类似于vo,pojo,java bean。一般而言，
  *我们在Java中定义了这个数据类之后要重写一下toString，equals等方法。要生成get,set方法

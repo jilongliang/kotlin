@@ -5,16 +5,16 @@ package com.flong.kotlin.modules.enums
  */
 enum class UserMsgCode() {
 
-	FIND_NOT_USER(1001, "找不到用户信息！"),
-	;
+	FIND_NOT_USER(1001, "找不到用户信息！"),;
+	
 
 
 	var code: Int? = null
 	var message: String? = null
 
 	constructor(code: Int, message: String) {
-		this.code = code;
-		this.message = message;
+		this.code = code
+		this.message = message
 	}
 
 	//静态

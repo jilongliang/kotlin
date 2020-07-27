@@ -14,6 +14,4 @@ data class UserRespVo constructor(
 	@field:JSONField(name="isDeleted")
 	var isDeleted: String? = null,//是否删除
 	var createTime: Date? = null //创建时间,允许为空,让数据库自动生成即可
-	):Serializable{
-	
-}
+	):Serializable

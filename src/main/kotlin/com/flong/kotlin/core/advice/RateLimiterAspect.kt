@@ -39,8 +39,11 @@ class RateLimiterAspect {
     fun interceptor(joinPoint: ProceedingJoinPoint): Any {
 
         val signature = joinPoint.signature as MethodSignature
+        //获取方法名
         val method = signature.method
+        //获取类
         val targetClass = method.declaringClass
+        //获取方法里面的注解信息
         val rateLimit = method.getAnnotation(RateLimiter::class.java)
 
         if (rateLimit != null) {

@@ -89,13 +89,13 @@ open class RedisTemplateDataSource : CachingConfigurerSupport {
         log.info("初始化JedisPoolConfig")
         var jedisPoolConfig = JedisPoolConfig()
         // 连接池最大连接数（使用负值表示没有限制）
-        jedisPoolConfig.setMaxTotal(redisProperties.maxTotal)
+        jedisPoolConfig.maxTotal = redisProperties.maxTotal
         // 连接池最大阻塞等待时间（使用负值表示没有限制）
-        jedisPoolConfig.setMaxWaitMillis(redisProperties.maxWaitMillis.toLong())
+        jedisPoolConfig.maxWaitMillis = redisProperties.maxWaitMillis.toLong()
         // 连接池中的最大空闲连接
-        jedisPoolConfig.setMaxIdle(redisProperties.maxIdle)
+        jedisPoolConfig.maxIdle = redisProperties.maxIdle
         // 连接池中的最小空闲连接
-        jedisPoolConfig.setMinIdle(redisProperties.minIdle)
+        jedisPoolConfig.minIdle = redisProperties.minIdle
         // jedisPoolConfig.setTestOnBorrow(true)
         // jedisPoolConfig.setTestOnCreate(true)
         // jedisPoolConfig.setTestWhileIdle(true)
@@ -126,11 +126,17 @@ open class RedisTemplateDataSource : CachingConfigurerSupport {
     open fun redisTemplateStr(@Qualifier(value = "jedisConnectionFactory") factory: RedisConnectionFactory): RedisTemplate<String, String> {
         log.info("初始化RedisTemplate")
         var redisTemplate = RedisTemplate<String, String>()
-        redisTemplate.setConnectionFactory(factory)
+        /*   redisTemplate.setConnectionFactory(factory)
         redisTemplate.setKeySerializer(StringRedisSerializer())
         redisTemplate.setHashKeySerializer(StringRedisSerializer())
         redisTemplate.setHashValueSerializer(JdkSerializationRedisSerializer())
-        redisTemplate.setValueSerializer(JdkSerializationRedisSerializer())
+        redisTemplate.setValueSerializer(JdkSerializationRedisSerializer())*/
+
+        redisTemplate.connectionFactory = factory
+        redisTemplate.keySerializer = StringRedisSerializer()
+        redisTemplate.hashKeySerializer = StringRedisSerializer()
+        redisTemplate.hashValueSerializer = JdkSerializationRedisSerializer()
+        redisTemplate.valueSerializer = JdkSerializationRedisSerializer()
         redisTemplate.afterPropertiesSet()
         redisTemplate.setEnableTransactionSupport(true)
         return redisTemplate
@@ -156,12 +162,12 @@ open class RedisTemplateDataSource : CachingConfigurerSupport {
         jackson2JsonRedisSerializer.setObjectMapper(om)
         // 配置redisTemplate
         var redisTemplate = RedisTemplate<String, Any>()
-        redisTemplate.setConnectionFactory(jedisConnectionFactory)
         var stringSerializer = StringRedisSerializer()
-        redisTemplate.setKeySerializer(stringSerializer) // key序列化
-        redisTemplate.setValueSerializer(jackson2JsonRedisSerializer) // value序列化
-        redisTemplate.setHashKeySerializer(stringSerializer) // Hash key序列化
-        redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer) // Hash value序列化
+        redisTemplate.connectionFactory = jedisConnectionFactory
+        redisTemplate.keySerializer = stringSerializer // key序列化
+        redisTemplate.valueSerializer = jackson2JsonRedisSerializer // value序列化
+        redisTemplate.hashKeySerializer = stringSerializer // Hash key序列化
+        redisTemplate.hashValueSerializer = jackson2JsonRedisSerializer // Hash value序列化
         redisTemplate.afterPropertiesSet()
         return redisTemplate
     }

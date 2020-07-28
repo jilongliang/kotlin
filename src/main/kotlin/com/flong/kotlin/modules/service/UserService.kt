@@ -16,56 +16,56 @@ import org.springframework.stereotype.Service
 import java.util.Date
 
 /**
- * @Description	UserServiceImpl
- * 这里的的：表示为实现 
- * @ClassName	UserServiceImpl.kt
- * @Date		2018年3月11日 下午6:52:08
- * @Author		liangjl
+ * @Description    UserServiceImpl
+ * 这里的的：表示为实现
+ * @ClassName    UserServiceImpl.kt
+ * @Date        2018年3月11日 下午6:52:08
+ * @Author        liangjl
  * @Copyright (c) All Rights Reserved, 2018.
  */
 @Service
-open class UserService : BaseService<IUserMapper,User,UserQuery>() {
+open class UserService : BaseService<IUserMapper, User, UserQuery>() {
 
 
-	//Kotlin lateinit 和 by lazy 的区别
-	//http://blog.csdn.net/Sherlbon/article/details/72769843
-	@Autowired lateinit var userMapper: IUserMapper;
+    //Kotlin lateinit 和 by lazy 的区别
+    //http://blog.csdn.net/Sherlbon/article/details/72769843
+    @Autowired lateinit var userMapper: IUserMapper
 
-	//根据
-	open fun queryAllUser(): List<User>? {
-		var wrapper = createWrapper();
-		return this.selectList(wrapper);
-	}
+    //根据
+    open fun queryAllUser(): List<User>? {
+        var wrapper = createWrapper()
+        return this.selectList(wrapper)
+    }
 
-	
-	open fun listPage(query : UserQuery) : PageVO<UserRespVo> ? {
-		var page = PageUtil().getPage(query)  ;// 设置分页
-		
-		var dataList = userMapper.getUserList(query, page!!);//page!!强制告诉编辑器不可能为空
-	    
-		var json = JSON.toJSONString(dataList);
-		println(json)
-		return  PageVO(dataList, page);// 获取分页数和总条数
-	}
-		
 
-	open fun getUserId(userId: Long): User? {
-		return get(userId);
-	}
+    open fun listPage(query: UserQuery): PageVO<UserRespVo>? {
+        var page = PageUtil().getPage(query)  // 设置分页
 
-	//插入用户
-	open fun addUser() {
-		var userId = IdWorker.getId();
-		var u = User(userId, "liangjl", "123456",null, Date());
-		var json = JSON.toJSONString(u);
-		println(json)
-		add(u);
-	}
+        var dataList = userMapper.getUserList(query, page!!)//page!!强制告诉编辑器不可能为空
 
-	fun createWrapper(): Wrapper<User> {
-		var wrapper = EntityWrapper<User>();
-		wrapper.setEntity(User());//设置实体
-		return wrapper;
-	}
+        var json = JSON.toJSONString(dataList)
+        println(json)
+        return PageVO(dataList, page)// 获取分页数和总条数
+    }
+
+
+    open fun getUserId(userId: Long): User? {
+        return get(userId)
+    }
+
+    //插入用户
+    open fun addUser() {
+        var userId = IdWorker.getId()
+        var u = User(userId, "liangjl", "123456", null, Date())
+        var json = JSON.toJSONString(u)
+        println(json)
+        add(u)
+    }
+
+    fun createWrapper(): Wrapper<User> {
+        var wrapper = EntityWrapper<User>()
+        wrapper.entity = User()//设置实体
+        return wrapper
+    }
 
 }

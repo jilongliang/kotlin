@@ -1,12 +1,12 @@
 package com.flong.kotlin.core.advice
 
-import java.beans.PropertyEditorSupport;
-import java.util.Date;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.InitBinder;
+import java.beans.PropertyEditorSupport
+import java.util.Date
+import org.apache.commons.lang3.StringUtils
+import org.apache.commons.lang3.time.DateUtils
+import org.springframework.web.bind.WebDataBinder
+import org.springframework.web.bind.annotation.ControllerAdvice
+import org.springframework.web.bind.annotation.InitBinder
 
 /**
  * 全局日期绑定
@@ -14,10 +14,9 @@ import org.springframework.web.bind.annotation.InitBinder;
 @ControllerAdvice
 class DateBindAdvice {
 
-
 	@InitBinder
 	fun dateBinder(binder: WebDataBinder): Unit {
-		binder.registerCustomEditor(Date::class.java, DatePropertyEditor());
+		binder.registerCustomEditor(Date::class.java, DatePropertyEditor())
 	}
 
 }
@@ -28,9 +27,9 @@ class DateBindAdvice {
 class DatePropertyEditor : PropertyEditorSupport() {
 	override fun setAsText(text: String) {
 		if (StringUtils.isBlank(text)) {
-			return;
+			return
 		}
-		var date = DateUtils.parseDate(text, "yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", "yyyy-MM");
-		setValue(date);
+		var date = DateUtils.parseDate(text, "yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", "yyyy-MM")
+		setValue(date)
 	}
 } 

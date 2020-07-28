@@ -3,7 +3,6 @@ package com.flong.kotlin.core.annotation
 
 //@Target(ElementType.TYPE, ElementType.METHOD)
 //@Retention(RetentionPolicy.RUNTIME)
-
 @Target(AnnotationTarget.TYPE, AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class RateLimiter(

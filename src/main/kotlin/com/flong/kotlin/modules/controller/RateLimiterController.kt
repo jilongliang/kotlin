@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
-
 @RestController
 @RequestMapping("rest")
 class RateLimiterController {
@@ -27,10 +26,10 @@ class RateLimiterController {
 
     @GetMapping(value = "/limit")
     @RateLimiter(key = "limit", time = 10, count = 1)
-    fun test(): ResponseEntity<Any> {
+    fun limit(): ResponseEntity<Any> {
 
         val date = DateFormatUtils.format(Date(), "yyyy-MM-dd HH:mm:ss.SSS")
-        val limitCounter = RedisAtomicInteger("limitCounter", redisTemplate!!.connectionFactory!!)
+        val limitCounter = RedisAtomicInteger("limit:rate:counter", redisTemplate!!.connectionFactory!!)
         val str = date + " 累计访问次数：" + limitCounter.andIncrement
         log.info(str)
 

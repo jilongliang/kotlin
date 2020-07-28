@@ -2,7 +2,7 @@
 -- Date: 2020/7/27
 -- Time: 10:01
 
-local key = "req.rate.limit:" .. KEYS[1]   --限流KEY
+local key = "request:limit:rate:" .. KEYS[1]   --限流KEY
 local limitCount = tonumber(ARGV[1])       --限流大小
 local limitTime = tonumber(ARGV[2])        --限流时间
 local current = tonumber(redis.call('get', key) or "0")

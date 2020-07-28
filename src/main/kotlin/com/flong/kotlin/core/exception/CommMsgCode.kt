@@ -16,7 +16,7 @@ enum class CommMsgCode() {
 	NOT_SUPPORTED(405, "Method Not SUPPORTED"),
 	SERVER_ERROR(500, "内部服务器错误"),
 	ROUTER(700, "路由"),
-
+	RATE_LIMIT(501, "访问时间范围限流中,请稍后再试！"),
 	/**
 	 * 系统级错误码
 	 */
@@ -39,6 +39,8 @@ enum class CommMsgCode() {
 	NO_DATA(197000, "没有数据"),
 	INVALID_SIGN(198000, "签名错误"),
 	INVALID_TOKEN(198401, "invalid token"),
+
+
 
 	/**
 	 * 其它错误码

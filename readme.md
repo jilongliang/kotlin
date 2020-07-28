@@ -1,4 +1,5 @@
-# 1、Redis是简介
+### 1、Redis是简介
+
 *  [redis官方网](https://redis.io/)
 
 *  Redis是一个开源的使用ANSI [C语言](http://baike.baidu.com/view/1219.htm)编写、支持网络、可基于内存亦可持久化的日志型、Key-Value[数据库](http://baike.baidu.com/view/1088.htm)，并提供多种语言的API。从2010年3月15日起，Redis的开发工作由VMware主持。从2013年5月开始，Redis的开发由Pivotal赞助
@@ -6,37 +7,41 @@
 * 工程基于基础架构 [Kotlin +SpringBoot + MyBatis完美搭建最简洁最酷的前后端分离框架](https://www.jianshu.com/p/0acd593fd11e)进行完善
 
 
-# 2、Redis开发者
+### 2、Redis开发者
 *  redis 的作者，叫Salvatore Sanfilippo，来自意大利的西西里岛，现在居住在卡塔尼亚。目前供职于Pivotal公司。他使用的网名是antirez。
 
-# 3、Redis安装
+### 3、Redis安装
 * Redis安装与其他知识点请参考几年前我编写文档 `Redis Detailed operating instruction.pdf`，这里不做太多的描述，主要讲解在kotlin+SpringBoot然后搭建Redis与遇到的问题
 > [Redis详细使用说明书.pdf](https://github.com/jilongliang/kotlin/blob/dev-redis/src/main/resource/Redis%20Detailed%20operating%20instruction.pdf)
 
 
 ![image.png](https://upload-images.jianshu.io/upload_images/14586304-c465eef20f776724.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-# 4、Redis应该学习那些？
+### 4、Redis应该学习那些？
 * 列举一些常见的内容
 ![Redis.png](https://upload-images.jianshu.io/upload_images/14586304-5567b7ff8752061b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-# 5、Redis有哪些命令
+### 5、Redis有哪些命令
 >[Redis官方命令清单](https://redis.io/commands)
 * Redis常用命令
 ![Redis常用命令.png](https://upload-images.jianshu.io/upload_images/14586304-147851dfc3974e44.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-# 6、 Redis常见应用场景
+### 6、 Redis常见应用场景
 ![应用场景.png](https://upload-images.jianshu.io/upload_images/14586304-4ff8b4d82e79ef2d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-# 7、 Redis常见的几种特征
+### 7、 Redis常见的几种特征
 * Redis的哨兵机制
 * Redis的原子性
 * Redis持久化有RDB与AOF方式
 
-# 8、工程结构
-![工程结构.png](https://upload-images.jianshu.io/upload_images/14586304-93ce6656c02154bd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+### 8、工程结构
+* ![工程结构.png](https://upload-images.jianshu.io/upload_images/14586304-93ce6656c02154bd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+* ![images](redisLua2.png)
 
-# 9、Kotlin与Redis的代码实现
+### 9、Kotlin与Redis+Lua的代码实现
+
+> [Kotlin与Redis实现文章请参考](https://www.jianshu.com/p/49cb540f9c91)
+
 * ##### Redis 依赖的Jar配置
 ```
 <!-- Spring Boot Redis 依赖 -->
@@ -50,252 +55,184 @@
 	<artifactId>jedis</artifactId>
 </dependency>
 ```
-* ##### RedisProperties代码
+* ##### LuaConfiguration 
+* 设置加载限流lua脚本
 ```
-@Component
 @Configuration
-@ConfigurationProperties(prefix = "redis")
-open  class RedisProperties {
-	
-	// Redis服务器地址
-	var host: String = "192.168.1.133"
-	// Redis服务器连接端口
-	var port: Int = 6739
-	// Redis服务器连接密码（默认为空）
-	var password: String = ""
-	// 连接超时时间（毫秒）
-	var timeout: Int = 5000
-	// 连接超时时间（毫秒）
-	var database: Int = 1
-	// 连接池最大连接数（使用负值表示没有限制）
-	var maxTotal: Int = 8
-	// 连接池最大阻塞等待时间（使用负值表示没有限制）
-	var maxWaitMillis: Int = 1
-	// 连接池中的最大空闲连接
-	var maxIdle: Int = 8
-	// 连接池中的最小空闲连接
-	var minIdle: Int = 8
-}
-```
-* ##### RedisTemplateDataSource代码
-```
-/**
- *参考博客： https://blog.csdn.net/New_CJ/article/details/84892543
- */
-@Component
-@EnableCaching // 启动缓存
-@Configuration
-@EnableConfigurationProperties(RedisProperties::class)
-open class RedisTemplateDataSource : CachingConfigurerSupport  {
-
-	
-	// Redis服务器地址
-	var host: String = "192.168.1.133"
-	// Redis服务器连接端口
-	var port: Int = 6739
-	// Redis服务器连接密码（默认为空）
-	var password: String = ""
-	// 连接超时时间（毫秒）
-	var timeout: Int = 5000
-	// 连接超时时间（毫秒）
-	var database: Int = 1
-	// 连接池最大连接数（使用负值表示没有限制）
-	var maxTotal: Int = 8
-	// 连接池最大阻塞等待时间（使用负值表示没有限制）
-	var maxWaitMillis: Int = 1
-	// 连接池中的最大空闲连接
-	var maxIdle: Int = 8
-	// 连接池中的最小空闲连接
-	var minIdle: Int = 8
-	
-	
-	//解決This type has a constructor, and thus must be initialized here異常信息
-	constructor()
- 
-	//获取配置信息构造方法
-	constructor(host:String,port:Int,password: String ,timeout: Int,database: Int,maxTotal: Int ,maxWaitMillis: Int,maxIdle: Int,minIdle: Int ){
-		this.host= host
-		this.port = port
-		this.password= password
-		this.timeout= timeout
-		this.database=database
-		this.maxTotal=maxTotal
-		this.maxWaitMillis=maxWaitMillis
-		this.maxIdle=maxIdle
-		this.minIdle=minIdle
-	}
-	
-	
-	companion object {
-		private val log: Logger = LoggerFactory.getLogger(RedisTemplateDataSource::class.java)
-	}
-	
-	
-	@Autowired lateinit var redisProperties: RedisProperties
-	
-	/**
-	 * 配置JedisPoolConfig
-	 * @return JedisPoolConfig实体
-	 */
-	@Bean(name = arrayOf("jedisPoolConfig"))
-	open fun jedisPoolConfig(): JedisPoolConfig {
-		log.info("初始化JedisPoolConfig");
-		var jedisPoolConfig = JedisPoolConfig();
-		// 连接池最大连接数（使用负值表示没有限制）
-		jedisPoolConfig.setMaxTotal(redisProperties.maxTotal);
-		// 连接池最大阻塞等待时间（使用负值表示没有限制）
-		jedisPoolConfig.setMaxWaitMillis(redisProperties.maxWaitMillis.toLong());
-		// 连接池中的最大空闲连接
-		jedisPoolConfig.setMaxIdle(redisProperties.maxIdle);
-		// 连接池中的最小空闲连接
-		jedisPoolConfig.setMinIdle(redisProperties.minIdle);
-		// jedisPoolConfig.setTestOnBorrow(true);
-		// jedisPoolConfig.setTestOnCreate(true);
-		// jedisPoolConfig.setTestWhileIdle(true);
-		return jedisPoolConfig;
-	}
-
-
-	/**
-	 * 实例化 RedisConnectionFactory 对象
-	 * @param poolConfig
-	 * @return
-	 */
-	@Bean(name = arrayOf("jedisConnectionFactory"))
-	open fun jedisConnectionFactory(@Qualifier(value = "jedisPoolConfig") poolConfig: JedisPoolConfig): RedisConnectionFactory {
-		log.info("初始化RedisConnectionFactory");
-		var jedisConnectionFactory = JedisConnectionFactory(poolConfig);
-		jedisConnectionFactory.hostName=redisProperties.host
-		jedisConnectionFactory.port=redisProperties.port
-		jedisConnectionFactory.database=redisProperties.database
-		return jedisConnectionFactory;
-	}
-
-	/**
-	 *  实例化 RedisTemplate 对象
-	 * @return
-	 */
-	@Bean(name = arrayOf("redisTemplateStr"))
-	open fun redisTemplateStr(@Qualifier(value = "jedisConnectionFactory") factory: RedisConnectionFactory): RedisTemplate<String, String> {
-		log.info("初始化RedisTemplate");
-		var redisTemplate = RedisTemplate<String, String>();
-		redisTemplate.setConnectionFactory(factory);
-		redisTemplate.setKeySerializer(StringRedisSerializer());
-		redisTemplate.setHashKeySerializer(StringRedisSerializer());
-		redisTemplate.setHashValueSerializer(JdkSerializationRedisSerializer());
-		redisTemplate.setValueSerializer(JdkSerializationRedisSerializer());
-		redisTemplate.afterPropertiesSet();
-		redisTemplate.setEnableTransactionSupport(true);
-		return redisTemplate;
-	}
-
-
+class LuaConfiguration {
     @Bean
-	override
-	fun cacheManager() : CacheManager{ 
-        var redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(5));
-        return RedisCacheManager.builder(RedisCacheWriter.nonLockingRedisCacheWriter(jedisConnectionFactory(jedisPoolConfig())))
-               .cacheDefaults(redisCacheConfiguration).build();
+    fun redisScript(): DefaultRedisScript<Number> {
+        val redisScript = DefaultRedisScript<Number>()
+        //设置限流lua脚本
+        redisScript.setScriptSource(ResourceScriptSource(ClassPathResource("limitrate.lua")))
+        //第1种写法反射转换Number类型
+        //redisScript.setResultType(Number::class.java)
+        //第2种写法反射转换Number类型
+        redisScript.resultType = Number::class.java
+        return redisScript
     }
+}
+``` 
+* Lua限流脚本
+```
+local key = "request:limit:rate:" .. KEYS[1]    --限流KEY
+local limitCount = tonumber(ARGV[1])            --限流大小
+local limitTime = tonumber(ARGV[2])             --限流时间
+local current = tonumber(redis.call('get', key) or "0")
+if current + 1 > limitCount then --如果超出限流大小
+    return 0
+else  --请求数+1，并设置1秒过期
+    redis.call("INCRBY", key,"1")
+    redis.call("expire", key,limitTime)
+    return current + 1
+end
+
+```
+
+
+* #### RateLimiter自定义注解
+* 1、Java自定义注解Target使用`@Target(ElementType.TYPE, ElementType.METHOD)`
+* 2、Java自定义注解Retention使用`@Retention(RetentionPolicy.RUNTIME)`
+* 3、Kotlin自定义注解Target使用`@Target(AnnotationTarget.TYPE, AnnotationTarget.FUNCTION)`
+* 4、Kotlin自定义注解Target使用`@Retention(AnnotationTarget.TYPE, AnnotationTarget.FUNCTION)`
+```
+
+@Target(AnnotationTarget.TYPE, AnnotationTarget.FUNCTION)
+@Retention(AnnotationRetention.RUNTIME)
+annotation class RateLimiter(
+        /**
+         * 限流唯一标识
+         * @return
+         */
+        val key: String = "",
+        /**
+         * 限流时间
+         * @return
+         */
+        val time: Int,
+        /**
+         * 限流次数
+         * @return
+         */
+        val count: Int
+ )
+```
  
-	
-	@Bean(value = arrayOf("redisTemplate"))
-	open fun redisTemplate(jedisConnectionFactory: JedisConnectionFactory): RedisTemplate<String, Any> {
-		//设置序列化
-		var jackson2JsonRedisSerializer = Jackson2JsonRedisSerializer(Object::class.java);
-		var om = ObjectMapper();
-		om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-		om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
-		jackson2JsonRedisSerializer.setObjectMapper(om);
-		// 配置redisTemplate
-		var redisTemplate = RedisTemplate<String, Any>();
-		redisTemplate.setConnectionFactory(jedisConnectionFactory);
-		var stringSerializer = StringRedisSerializer();
-		redisTemplate.setKeySerializer(stringSerializer); // key序列化
-		redisTemplate.setValueSerializer(jackson2JsonRedisSerializer); // value序列化
-		redisTemplate.setHashKeySerializer(stringSerializer); // Hash key序列化
-		redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer); // Hash value序列化
-		redisTemplate.afterPropertiesSet();
-		return redisTemplate;
-	}
+### 限流AOP的Aspect切面实现
+```
+import com.flong.kotlin.core.annotation.RateLimiter
+import com.flong.kotlin.core.exception.BaseException
+import com.flong.kotlin.core.exception.CommMsgCode
+import com.flong.kotlin.core.vo.ErrorResp
+import com.flong.kotlin.utils.WebUtils
+import org.aspectj.lang.ProceedingJoinPoint
+import org.aspectj.lang.annotation.Around
+import org.aspectj.lang.annotation.Aspect
+import org.aspectj.lang.reflect.MethodSignature
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Configuration
+import org.springframework.data.redis.core.RedisTemplate
+import org.springframework.data.redis.core.script.DefaultRedisScript
+import org.springframework.web.context.request.RequestContextHolder
+import org.springframework.web.context.request.ServletRequestAttributes
+import java.util.*
+
+
+@Suppress("SpringKotlinAutowiring")
+@Aspect
+@Configuration
+class RateLimiterAspect {
+    @Autowired lateinit var redisTemplate: RedisTemplate<String, Any>
+    @Autowired var redisScript: DefaultRedisScript<Number>? = null
+
+    /**
+     * 半生对象
+     */
+    companion object {
+        private val log: Logger = LoggerFactory.getLogger(RateLimiterAspect::class.java)
+    }
+
+    @Around("execution(* com.flong.kotlin.modules.controller ..*(..) )")
+    @Throws(Throwable::class)
+    fun interceptor(joinPoint: ProceedingJoinPoint): Any {
+
+        val signature = joinPoint.signature as MethodSignature
+        val method = signature.method
+        val targetClass = method.declaringClass
+        val rateLimit = method.getAnnotation(RateLimiter::class.java)
+
+        if (rateLimit != null) {
+            val request = (RequestContextHolder.getRequestAttributes() as ServletRequestAttributes).request
+            val ipAddress = WebUtils.getIpAddr(request = request)
+
+            val stringBuffer = StringBuffer()
+            stringBuffer.append(ipAddress).append("-")
+                    .append(targetClass.name).append("- ")
+                    .append(method.name).append("-")
+                    .append(rateLimit!!.key)
+
+            val keys = Collections.singletonList(stringBuffer.toString())
+
+            print(keys + rateLimit!!.count + rateLimit!!.time)
+            val number = redisTemplate!!.execute<Number>(redisScript, keys, rateLimit!!.count, rateLimit!!.time)
+
+            if (number != null && number!!.toInt() != 0 && number!!.toInt() <= rateLimit!!.count) {
+                log.info("限流时间段内访问第：{} 次", number!!.toString())
+                return joinPoint.proceed()
+            }
+
+        } else {
+            var proceed: Any? = joinPoint.proceed() ?: return ErrorResp(CommMsgCode.SUCCESS.code!!, CommMsgCode.SUCCESS.message!!)
+            return joinPoint.proceed()
+        }
+        throw BaseException(CommMsgCode.RATE_LIMIT.code!!, CommMsgCode.RATE_LIMIT.message!!)
+    }
+
+
 }
+
 ```
-* #### RedisAutoConfiguration代码
-```
-@EnableConfigurationProperties(RedisProperties::class)
-open class RedisAutoConfiguration {
-	
-	@Autowired lateinit var redisProperties: RedisProperties;
-	
-	@Bean
-	@ConditionalOnMissingBean(RedisTemplateDataSource::class)
-	@ConditionalOnProperty(name = arrayOf("redis.host"))
-	open fun redisTemplateDataSource():RedisTemplateDataSource {
-		return RedisTemplateDataSource(redisProperties.host,redisProperties.port,redisProperties.password,
-			redisProperties.timeout,redisProperties.database,redisProperties.maxTotal,
-			redisProperties.maxWaitMillis,redisProperties.maxIdle,redisProperties.minIdle)
-	}
-}
-```
-* #### META-INF的spring.factories配置
-```
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.flong.kotlin.core.redis.RedisAutoConfiguration
-```
+ 
 * #### Controller代码
 ```
-@Autowired lateinit var stringRedisTemplate: StringRedisTemplate
-
-//RedisTemplateK, V>这个类由于有K与V，下面的做法是必须要指定Key-Value
-//2 type arguments expected for class RedisTemplate
-@Autowired lateinit var redisTemplate : RedisTemplate<String,Any>;
-
-    //简单的缓存测试1
-	@RequestMapping("/getUserByRedis/{userId}")
-	fun getUserByRedis(@PathVariable("userId") userId: Long) {
-		var redis_key 	= USER_REDIS_KEY + "_" + userId;
-		var user		= stringRedisTemplate.opsForValue().get(redis_key)
-		if (user == null) {
-			var userObj  = userService.getUserId(userId)
-			stringRedisTemplate.opsForValue().set(redis_key, userObj.toString())
-			print("从DB获取----" + JSON.toJSONString(userObj));
-
-		} else {
-			print("从缓存获取----" + JSON.toJSONString(user));
-		}
-
-	}
-
-
-    //简单的缓存测试2
-	@RequestMapping("/getUserByRedis1/{userId}")
-	fun getUserByRedis1(@PathVariable("userId") userId: Long) {
-		var redis_key 	= USER_REDIS_KEY + "_" + userId;
-		var user		= redisTemplate.opsForValue().get(redis_key)
-		if (user == null) {
-			var userObj  = userService.getUserId(userId)
-			redisTemplate.opsForValue().set(redis_key, userObj.toString())
-			print("从DB获取----" + JSON.toJSONString(userObj));
-
-		} else {
-			print("从缓存获取----" + JSON.toJSONString(user));
-		}
-
-	}
+ @RestController
+ @RequestMapping("rest")
+ class RateLimiterController {
+     companion object {
+         private val log: Logger = LoggerFactory.getLogger(RateLimiterController::class.java)
+     }
+ 
+     @Autowired
+     private val redisTemplate: RedisTemplate<*, *>? = null
+ 
+     @GetMapping(value = "/limit")
+     @RateLimiter(key = "limit", time = 10, count = 1)
+     fun limit(): ResponseEntity<Any> {
+ 
+         val date = DateFormatUtils.format(Date(), "yyyy-MM-dd HH:mm:ss.SSS")
+         val limitCounter = RedisAtomicInteger("limit:rate:counter", redisTemplate!!.connectionFactory!!)
+         val str = date + " 累计访问次数：" + limitCounter.andIncrement
+         log.info(str)
+ 
+         return ResponseEntity.ok<Any>(str)
+     }
+ }
 ```
+
 > 注意：RedisTemplateK, V>这个类由于有K与V，下面的做法是必须要指定Key-Value 2 type arguments expected for class RedisTemplate
 * #### 运行结果
+* ![images](redisLua.png)
+* ![images](redisLua1.png)
  
-* ![运行结果.png](https://upload-images.jianshu.io/upload_images/14586304-d4db20640f486808.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-
-
 # 10、参考文章
-> [参考Springboot2.0 使用redis @cacheable等注解缓存博客](https://blog.csdn.net/New_CJ/article/details/84892543)
+> [参考分布式限流之Redis+Lua实现](https://www.jianshu.com/p/d2109a3068df)
+> [参考springboot + aop + Lua分布式限流的最佳实践](https://www.cnblogs.com/youngdeng/p/12883831.html)
+
 
 # 11、工程架构源代码
-
-> [Kotlin+SpringBoot与Redis整合工程源代码](https://github.com/jilongliang/kotlin/tree/dev-redis)
+> [Kotlin+SpringBoot与Redis+Lua整合工程源代码](https://github.com/jilongliang/kotlin/tree/dev-lua)
 
 
 # 12 、总结与建议

@@ -1,9 +1,10 @@
 package com.flong.kotlin.core.advice
 
 import com.flong.kotlin.core.annotation.RateLimiter
+import com.flong.kotlin.core.exception.BaseException
 import com.flong.kotlin.core.exception.CommMsgCode
 import com.flong.kotlin.core.vo.ErrorResp
-import com.flong.kotlin.utils.ObjectUtil
+import com.flong.kotlin.utils.WebUtils
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
 import org.aspectj.lang.annotation.Aspect
@@ -16,52 +17,22 @@ import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.data.redis.core.script.DefaultRedisScript
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.context.request.ServletRequestAttributes
-import java.io.Serializable
 import java.util.*
-import javax.servlet.http.HttpServletRequest
 
 
 @Suppress("SpringKotlinAutowiring")
 @Aspect
 @Configuration
 class RateLimiterAspect {
+    @Autowired lateinit var redisTemplate: RedisTemplate<String, Any>
+    @Autowired var redisScript: DefaultRedisScript<Number>? = null
 
+    /**
+     * 半生对象
+     */
     companion object {
         private val log: Logger = LoggerFactory.getLogger(RateLimiterAspect::class.java)
-        fun getIpAddr(request: HttpServletRequest): String? {
-            var ipAddress: String? = null
-            try {
-                ipAddress = request.getHeader("x-forwarded-for")
-                if (ipAddress == null || ipAddress!!.length == 0 || "unknown".equals(ipAddress!!, ignoreCase = true)) {
-                    ipAddress = request.getHeader("Proxy-Client-IP")
-                }
-                if (ipAddress == null || ipAddress!!.length == 0 || "unknown".equals(ipAddress!!, ignoreCase = true)) {
-                    ipAddress = request.getHeader("WL-Proxy-Client-IP")
-                }
-                if (ipAddress == null || ipAddress!!.length == 0 || "unknown".equals(ipAddress!!, ignoreCase = true)) {
-                    ipAddress = request.getRemoteAddr()
-                }
-                // 对于通过多个代理的情况，第一个IP为客户端真实IP,多个IP按照','分割
-                if (ipAddress != null && ipAddress!!.length > 15) {
-                    // "***.***.***.***".length()= 15
-                    if (ipAddress!!.indexOf(",") > 0) {
-                        ipAddress = ipAddress!!.substring(0, ipAddress.indexOf(","))
-                    }
-                }
-            } catch (e: Exception) {
-                ipAddress = ""
-            }
-
-            return ipAddress
-        }
-
     }
-
-    @Autowired
-    private val redisTemplate: RedisTemplate<String, Serializable>? = null
-
-    @Autowired
-    private val redisScript: DefaultRedisScript<Number>? = null
 
     @Around("execution(* com.flong.kotlin.modules.controller ..*(..) )")
     @Throws(Throwable::class)
@@ -74,7 +45,7 @@ class RateLimiterAspect {
 
         if (rateLimit != null) {
             val request = (RequestContextHolder.getRequestAttributes() as ServletRequestAttributes).request
-            val ipAddress = getIpAddr(request)
+            val ipAddress = WebUtils.getIpAddr(request = request)
 
             val stringBuffer = StringBuffer()
             stringBuffer.append(ipAddress).append("-")
@@ -84,6 +55,7 @@ class RateLimiterAspect {
 
             val keys = Collections.singletonList(stringBuffer.toString())
 
+            print(keys + rateLimit!!.count + rateLimit!!.time)
             val number = redisTemplate!!.execute<Number>(redisScript, keys, rateLimit!!.count, rateLimit!!.time)
 
             if (number != null && number!!.toInt() != 0 && number!!.toInt() <= rateLimit!!.count) {
@@ -92,14 +64,10 @@ class RateLimiterAspect {
             }
 
         } else {
-            var proceed = joinPoint.proceed()
-            if (proceed == null) {
-                return ErrorResp(CommMsgCode.SUCCESS.code!!, CommMsgCode.SUCCESS.message!!)
-            }
+            var proceed: Any? = joinPoint.proceed() ?: return ErrorResp(CommMsgCode.SUCCESS.code!!, CommMsgCode.SUCCESS.message!!)
             return joinPoint.proceed()
         }
-
-        throw RuntimeException("已经到设置限流次数")
+        throw BaseException(CommMsgCode.RATE_LIMIT.code!!, CommMsgCode.RATE_LIMIT.message!!)
     }
 
 

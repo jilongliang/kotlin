@@ -47,10 +47,10 @@ class ExceptionAdvice{
 			createLog(e, uri, params)
 			return ErrorResp(CommMsgCode.DB_ERROR.code!!, CommMsgCode.DB_ERROR.message!!)
 
-		} else if (e is BaseException) {
-			var be = e as BaseException
+		} else if (e is BaseException ) {
+			//var be = e as BaseException
 			log.error("uri:{},params:{},code:{},message:{}", uri, params)
-			return ErrorResp(be.code,be.msg)
+			return ErrorResp(e.code,e.msg)
 			
 		} else if (e is MissingServletRequestParameterException
 				|| e is BindException
